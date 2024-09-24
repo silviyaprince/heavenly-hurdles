@@ -40,9 +40,9 @@ export  function Sidebar() {
         },
     ];
   return (
-    <div className="bg-primary2 md:w-64 h-full p-3 flex flex-col text-secondary2  ">
+    <div className=" bg-primary2 w-64 h-full p-3 flex flex-col text-secondary2  ">
 <div className='flex'>
-<img  className="hidden lg:block md:h-auto md:w-30 bg-slate-400 md:-mt-8" src={PigeonLogo} alt="company logo" />
+<img  className="h-auto w-30 bg-slate-400 -mt-8" src={PigeonLogo} alt="company logo" />
 </div>
  <div className='flex-1'>
     {sidebartoplinks.map((item,index)=> (

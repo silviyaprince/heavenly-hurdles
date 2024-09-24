@@ -4,14 +4,11 @@ import { Header } from './Header'
 
 export  function Layout() {
   return (
-    <div  className='flex flex-col flex-wrap md:flex md:flex-row md:h-screen md:w-screen bg-zinc-50 '>
-      <div className='hidden md:block'><Sidebar  /></div> 
-       <div className=' md:flex-col md:flex-1'>
-            <Header/>
-            <div className='p-4'>
-            </div>
-            </div>
-        </div>
+    <div  className='flex flex-row w-screen h-screen  bg-zinc-100 '>
+      <Sidebar className="hidden md:block bg-red-500" />
+       <Header/>
+   </div>
+        
   )
 }
 

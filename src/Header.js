@@ -8,16 +8,23 @@ import { GrCart } from "react-icons/gr";
 
 export function Header() {
   return (
-    <div className="flex flex-col">
+    <div className=" flex flex-col">
    <div className="flex flex-row bg-primary2 h-24 w-screen justify-around">
-   <IoMdMenu className="text-4xl text-white mt-6 ml-2"/>
+   <IoMdMenu className="md:hidden text-4xl text-white mt-6 ml-2"/>
    <div className="flex flex-row justify-center">
-   <div className="text-3xl italic text-white font-display font-extrabold mt-6">Heavenly Hurdles</div>
-   <img className="h-20 w-auto mt-2" src={PigeonLogo} alt="company logo" />
+   <div className="text-3xl italic text-white font-display font-extrabold mt-7">Heavenly Hurdles</div>
+   <img className="md:hidden h-20 w-auto mt-2" src={PigeonLogo} alt="company logo" />
    </div>
-   <BsCartFill className="text-white text-3xl mt-6"/>
+   <HiSearch className="hidden md:block text-3xl text-white mt-7"/>
+   <IoNotifications className="hidden md:block text-white text-3xl mt-7"/>
+   <BsCartFill className="text-white text-3xl mt-7"/>
+   <button
+          // onClick={handleModeSwitch}
+          className=" hidden md:block mt-7 h-10 text-primary1 bg-white px-3 py-2 text-white font-display font-semibold rounded hover:cursor-pointer">
+          MODE
+        </button>
   </div>
-  <div className="relative mt-4 mx-auto">
+  <div className="md:hidden relative mt-4 mx-auto">
   <HiSearch className="absolute text-2xl  mt-1 "/>
   <input
           type="text"
@@ -25,6 +32,7 @@ export function Header() {
            className="  text-2xl px-3 pl-12 focus:outline-none active:outline-none h-10 w-[28rem] md:w-[34rem] border  border-gray-500 md:border-gray-500 rounded-sm"
        />
  </div>
+ 
   </div>
   );
 }
@@ -72,11 +80,7 @@ export function Header() {
 //         <div>
 //           <BsCartFill fontSize={26} className="text-primary2" />
 //         </div>
-//         <button
-//           // onClick={handleModeSwitch}
-//           className=" m-4 bg-primary2 px-3 py-3 text-white font-display font-semibold rounded">
-//           MODE
-//         </button>
+        
 //       </div>
 //       <div></div>
 //     </div>
