@@ -40,18 +40,18 @@ export  function Sidebar() {
         },
     ];
   return (
-    <div className=" bg-primary2 w-64 h-full p-3 flex flex-col text-secondary2  ">
+    <div className="hidden lg:block  lg:flex-initial lg:w-80 bg-primary2 w-64 h-full p-3 flex flex-col  text-secondary2  ">
 <div className='flex'>
 <img  className="h-auto w-30 bg-slate-400 -mt-8" src={PigeonLogo} alt="company logo" />
 </div>
- <div className='flex-1'>
-    {sidebartoplinks.map((item,index)=> (
+<div className='flex flex-col '>
+ {sidebartoplinks.map((item,index)=> (
         <SidebarMenu key={index} item={item} />
     )
     )}
 </div>
 
-<div className='mb-11'>{sidebarbottomlinks.map((item,index)=>(
+<div className='mb-11 flex flex-col'>{sidebarbottomlinks.map((item,index)=>(
      <SidebarMenu key={index} item={item} />
 ))}
     </div>
@@ -61,10 +61,8 @@ export  function Sidebar() {
 
 function SidebarMenu({item}){
     return(
-        <div className='flex flex-col space-y-1'>
-            <button className='mr-4 w-50 px-4 ml-2 block rounded-md bg-primary2 px-3 py-2 text-md font-medium font-display font-semibold text-white hover:bg-primary1 '><span className='flex items-center space-x-4'>{item.icon} <span className='hidden sm:inline'>{item.label}</span></span></button>
-        </div>
-    )
+        <button className='mr-4 w-50 px-4 ml-2 block rounded-md bg-primary2 px-3 py-2 text-md font-medium font-display font-semibold text-white hover:bg-primary1 '><span className='flex items-center space-x-4'>{item.icon} <span className='hidden sm:inline'>{item.label}</span></span></button>
+       )
 }
 
 
