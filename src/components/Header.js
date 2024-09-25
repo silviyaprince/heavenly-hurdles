@@ -5,8 +5,10 @@ import { BsCartFill } from "react-icons/bs";
 import { PigeonLogo } from "../image";
 import { IoMdMenu } from "react-icons/io";
 import { GrCart } from "react-icons/gr";
+import { useNavigate } from "react-router-dom";
 
 export function Header() {
+  const navigate=useNavigate()
   return (
     <div className="flex w-full lg:w-full lg:h-40 lg:flex-1 flex-col ">
       <div className="lg:p-3  flex flex-row lg:flex-1 bg-primary2 h-24 lg:h-32    lg:gap-3 lg:justify-evenly justify-around  ">
@@ -33,7 +35,7 @@ export function Header() {
           />
         </div>
         <button
-          // onClick={handleModeSwitch}
+          // onClick={()=>navigate("/dashboard")}
           className=" hidden md:block  lg:block mt-7   h-10 text-primary3 bg-white px-3 py-2 text-white font-display font-semibold rounded hover:cursor-pointer">
           MODE
         </button>

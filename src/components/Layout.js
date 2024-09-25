@@ -7,6 +7,7 @@ export  function Layout() {
     <div  className='flex  flex-row w-screen h-screen  bg-zinc-100 '>
       <Sidebar className="hidden md:block" />
 <Header/>
+
    </div>
         
   )
