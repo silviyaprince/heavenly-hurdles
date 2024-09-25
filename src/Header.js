@@ -12,11 +12,11 @@ export function Header() {
       <div className="lg:p-3  flex flex-row lg:flex-1 bg-primary2 h-24 lg:h-32    lg:gap-3 lg:justify-evenly justify-around  ">
         <IoMdMenu className="md:hidden text-4xl text-white mt-6 ml-2" />
         <div className="flex flex-row justify-center">
-          <div className="text-3xl lg:text-5xl lg:mr-96 italic text-white font-display font-extrabold mt-7">
+          <div className="text-3xl xl:text-5xl xl:mr-60 md:mr-10 italic text-white font-display font-extrabold mt-7">
             Heavenly Hurdles
           </div>
           <img
-            className="md:hidden h-20 w-auto mt-2"
+            className="lg:hidden h-20 w-auto mt-2"
             src={PigeonLogo}
             alt="company logo"
           />
@@ -29,7 +29,7 @@ export function Header() {
           <input
             type="text"
             placeholder="Search..."
-            className="  text-2xl px-3 pl-12 focus:outline-none active:outline-none h-10 w-[28rem] lg:w-[34rem] border  border-gray-500 md:border-gray-500 rounded-sm"
+            className="  text-2xl px-3 pl-12 focus:outline-none active:outline-none h-10 w-20 xl:w-[34rem] lg:w-40 border  border-gray-500 md:border-gray-500 rounded-sm"
           />
         </div>
         <button
@@ -38,7 +38,7 @@ export function Header() {
           MODE
         </button>
       </div>
-      <div className="md:hidden relative mt-4 mx-auto">
+      <div className="lg:hidden relative mt-4 mx-auto">
         <HiSearch className="absolute text-2xl  mt-1 " />
         <input
           type="text"
