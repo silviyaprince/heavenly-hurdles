@@ -2,7 +2,7 @@ import React from "react";
 import { HiSearch } from "react-icons/hi";
 import { IoNotifications } from "react-icons/io5";
 import { BsCartFill } from "react-icons/bs";
-import { PigeonLogo } from "./image";
+import { PigeonLogo } from "../image";
 import { IoMdMenu } from "react-icons/io";
 import { GrCart } from "react-icons/gr";
 

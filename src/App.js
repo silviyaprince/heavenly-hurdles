@@ -15,7 +15,8 @@ import {
 } from "./data";
 
 import { Productlist } from "./Productlist";
-import { Layout } from "./Layout";
+import { Layout } from "./components/Layout";
+import { Dashboard } from "./components/Dashboard";
 
 function App() {
   const navigate=useNavigate()
@@ -44,8 +45,3 @@ function App() {
 
 export default App;
 
-function Dashboard(){
-  return(
-    <div>Dashboard</div>
-  )
-}
