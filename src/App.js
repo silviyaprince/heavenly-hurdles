@@ -17,7 +17,7 @@ import {
 import { Productlist } from "./Productlist";
 import { Layout } from "./components/Layout";
 import { Dashboard } from "./components/Dashboard";
-
+import { Signin } from "./components/Signin";
 function App() {
   const navigate=useNavigate()
   return(
@@ -25,9 +25,12 @@ function App() {
 
 
 <Routes>
-  <Route path="/dashboard" element={ <Dashboard/>} />
+<Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} /> {/* This ensures Dashboard shows for the root path */}
+          <Route path="signin" element={<Signin />} />
+        </Route>
 </Routes>
-<Layout/>
+
 </div>
 
 

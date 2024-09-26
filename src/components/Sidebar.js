@@ -9,7 +9,7 @@ import { RiAddLine } from "react-icons/ri";
 import { IoStorefrontSharp } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { PiSignOutBold } from "react-icons/pi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 export function Sidebar() {
   const navigate = useNavigate();
   const sidebartoplinks = [
@@ -37,7 +37,7 @@ export function Sidebar() {
     {
       label: "SIGN IN",
       icon: <PiSignInBold />,
-      handleClick: () => navigate("/signin"),
+      handleClick: () => navigate("signin"),
     },
   ];
 
@@ -55,7 +55,7 @@ export function Sidebar() {
   ];
 
   return (
-    <div className="hidden lg:block  lg:flex-initial lg:w-80 bg-primary2 w-64 h-full p-3 flex flex-col  text-secondary2  ">
+    <nav className=" hidden relative lg:block  lg:flex-initial lg:w-80 bg-primary2 w-64 h-full p-3 flex flex-col  text-secondary2  ">
       <div className="flex">
         <img
           className="h-auto w-30 bg-slate-400 -mt-8"
@@ -74,7 +74,7 @@ export function Sidebar() {
           <SidebarMenu key={index} item={item} />
         ))}
       </div>
-    </div>
+    </nav>
   );
 }
 

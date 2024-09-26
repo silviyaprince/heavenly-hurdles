@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 export function Header() {
   const navigate=useNavigate()
   return (
-    <div className="flex w-full lg:w-full lg:h-40 lg:flex-1 flex-col ">
+    <nav className=" flex w-full lg:w-full lg:h-40 lg:flex-1 flex-col ">
       <div className="lg:p-3  flex flex-row lg:flex-1 bg-primary2 h-24 lg:h-32    lg:gap-3 lg:justify-evenly justify-around  ">
         <IoMdMenu className="md:hidden text-4xl text-white mt-6 ml-2" />
         <div className="flex flex-row justify-center">
@@ -48,7 +48,7 @@ export function Header() {
           className="  text-2xl px-3 pl-12 focus:outline-none active:outline-none h-10 w-[28rem] md:w-[34rem] border  border-gray-500 md:border-gray-500 rounded-sm"
         />
       </div>
-    </div>
+    </nav>
   );
 }
 // {mode === "light" ? "dark" : "light"}
