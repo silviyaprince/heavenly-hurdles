@@ -16,7 +16,7 @@ export function Sidebar() {
     {
       label: "DASHBOARD",
       icon: <MdSpaceDashboard />,
-      handleClick: () => navigate("/dashboard"),
+      handleClick: () => navigate("/"),
     },
     {
       label: "STOCK",

@@ -3,7 +3,7 @@ import { Campingproductlist } from "./Campingproductlist";
 import { Routes, Route, useParams, Link, useNavigate } from "react-router-dom";
 import { Home } from "./Home";
 import { PigeonLogo } from "./image";
-import Addstock from "./Addstock";
+import Addstock from "./components/Addstock";
 import { useState } from "react";
 import { useRef, useEffect } from "react";
 import { Product } from "./Product";
@@ -28,6 +28,7 @@ function App() {
 <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} /> {/* This ensures Dashboard shows for the root path */}
           <Route path="signin" element={<Signin />} />
+          <Route path="/addstock" element={<Addstock />} />
         </Route>
 </Routes>
 
