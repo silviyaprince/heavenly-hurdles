@@ -21,7 +21,7 @@ export function Sidebar() {
     {
       label: "STOCK",
       icon: <IoStorefrontSharp />,
-      handleClick: () => navigate("/stock"),
+      handleClick: () => navigate("stock"),
     },
     {
       label: "SHOP",
@@ -32,7 +32,7 @@ export function Sidebar() {
     {
       label: "ADD STOCK",
       icon: <RiAddLine />,
-      handleClick: () => navigate("/addstock"),
+      handleClick: () => navigate("addstock"),
     },
     {
       label: "SIGN IN",
@@ -45,7 +45,7 @@ export function Sidebar() {
     {
       label: "CONTACT US",
       icon: <FaPhoneAlt />,
-      handleClick: () => navigate("/contactus"),
+      handleClick: () => navigate("contactus"),
     },
     {
       label: "SIGN OUT",
@@ -55,7 +55,7 @@ export function Sidebar() {
   ];
 
   return (
-    <nav className=" hidden relative lg:block  lg:flex-initial lg:w-80 bg-primary2 w-64 h-full p-3 flex flex-col  text-secondary2  ">
+    <nav className=" hidden relative lg:block  lg:flex-initial lg:w-80 bg-primary2 w-64 h-full p-3 flex flex-col  text-secondary2  z-20">
       <div className="flex">
         <img
           className="h-auto w-30 bg-slate-400 -mt-8"
