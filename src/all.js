@@ -132,7 +132,7 @@ const navigate = useNavigate();
         {isDropdownOpen && (
           <div
             ref={dropdownRef}
-            className="absolute left-34 top-0 w-full h-screen bg-white shadow-lg z-10">
+            className="absolute left-64 top-0 w-full h-screen bg-white shadow-lg z-10">
             <div className="p-5">
               <div className="flex space-x-5">
                 <button

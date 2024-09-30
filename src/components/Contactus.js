@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Field, Label, Switch } from '@headlessui/react'
+import { Field, Label, Switch} from '@headlessui/react'
 
 export  function Contactus() {
   const [agreed, setAgreed] = useState(false)
@@ -20,10 +20,14 @@ export  function Contactus() {
         />
       </div>
       <div className="mx-auto max-w-2xl text-center">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact sales</h2>
+        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Contact Us</h2>
         <p className="mt-2 text-lg leading-8 text-gray-600">
-          Aute magna irure deserunt veniam aliqua magna enim voluptate.
+          Fill the form or contact us via other channels listed below
         </p>
+        <h3 className='font-display font-semibold'>Address</h3>
+        <p>G13, 317, Ground Floor,</p> 
+        <p>Elite Empire, Valluvarkottam High Road,</p>
+        <p> Nungambakkam, Chennai 600034, </p>
       </div>
       <form action="#" method="POST" className="mx-auto mt-16 max-w-xl sm:mt-20">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">

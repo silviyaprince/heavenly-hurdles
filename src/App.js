@@ -7,28 +7,31 @@ import { Dashboard } from "./components/Dashboard";
 import { Layout } from "./components/Layout";
 import { Pagenotfound } from "./components/Pagenotfound";
 import { Signin } from "./components/Signin";
+import { Shop } from "./components/Dropdownmenu";
+import { Productlist } from "./Productlist";
+import { ProductProvider } from "./components/ProductContext";
 function App() {
-  const navigate=useNavigate()
-  return(
+  const navigate = useNavigate();
+
+  return (
+    <ProductProvider>
     <div>
-
-
-<Routes>
-<Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} /> {/* This ensures Dashboard shows for the root path */}
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Dashboard />} />{" "}
+          {/* This ensures Dashboard shows for the root path */}
           <Route path="signin" element={<Signin />} />
           <Route path="addstock" element={<Addstock />} />
           <Route path="contactus" element={<Contactus />} />
           <Route path="stock" element={<Stock />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="products" element={<Productlist />} />
         </Route>
-        <Route path="*" element={<Pagenotfound/>}/>
-</Routes>
-
-</div>
-
-
-       )
-       }
+        <Route path="*" element={<Pagenotfound />} />
+      </Routes>
+    </div>
+    </ProductProvider>
+  );
+}
 
 export default App;
-
