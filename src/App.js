@@ -7,9 +7,10 @@ import { Dashboard } from "./components/Dashboard";
 import { Layout } from "./components/Layout";
 import { Pagenotfound } from "./components/Pagenotfound";
 import { Signin } from "./components/Signin";
-import { Shop } from "./components/Dropdownmenu";
+import { Dropdownmenu } from "./components/Dropdownmenu";
 import { Productlist } from "./Productlist";
 import { ProductProvider } from "./components/ProductContext";
+import Empty from "./components/Empty";
 function App() {
   const navigate = useNavigate();
 
@@ -24,8 +25,9 @@ function App() {
           <Route path="addstock" element={<Addstock />} />
           <Route path="contactus" element={<Contactus />} />
           <Route path="stock" element={<Stock />} />
-          <Route path="shop" element={<Shop />} />
+          <Route path="shop" element={<Empty />} />
           <Route path="products" element={<Productlist />} />
+
         </Route>
         <Route path="*" element={<Pagenotfound />} />
       </Routes>

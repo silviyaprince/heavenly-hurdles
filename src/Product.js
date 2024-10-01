@@ -2,16 +2,13 @@
 // import { useNavigate } from "react-router-dom";
 // import Usercontext from "./Usercontext";
 
-
-
-
 // export function Product({ product }) {
 //   const navigate=useNavigate()
 //   return (
 //     <div className="bg-white">
 //     <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
 //       <h2 className="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
-    
+
 //       <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
 //         {Category.items.map((product) => (
 //           <div key={product.id} className="group relative">
@@ -39,13 +36,9 @@
 //       </div>
 //     </div>
 //     </div>
-   
+
 //   );
 // }
-
-
-
-
 
 //  <div>
 // <img onClick={()=>navigate("/products/"+id)} className="camp-picture" src={product.pic} alt="camp-pic" />
@@ -54,4 +47,14 @@
 // <p className="camp-description">{product.description}</p>
 // <h4 className="camp-price">{product.price}</h4>
 // <button className="camp-button">ADD TO CART</button>
-// </div> 
+// </div>
+
+import React from "react";
+
+export function Product({ product, index }) {
+  return (
+    <div className="flex gap-2">
+      <img className="w-40 h-40" src={product.pic} />
+    </div>
+  );
+}

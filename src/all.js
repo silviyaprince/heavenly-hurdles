@@ -9,7 +9,7 @@ const navigate = useNavigate();
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const dropdownRef = useRef(null);
 
-  const handleStockClick = () => {
+  const handleShopClick = () => {
     setDropdownOpen(!isDropdownOpen);
   };
 
