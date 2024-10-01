@@ -53,8 +53,8 @@ import React from "react";
 
 export function Product({ product, index }) {
   return (
-    <div className="flex gap-2">
-      <img className="w-40 h-40" src={product.pic} />
+    <div className="flex gap-2 bg-primary3">
+      <img className="w-40 h-40" src={product.pic} alt="product img"/>
     </div>
   );
 }

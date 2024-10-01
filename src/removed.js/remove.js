@@ -111,4 +111,10 @@
       </div>
      
     )}
+    <div> 
+{displayedProducts.map((product,index)=>(
+ <Product key={index} product={product}/>
+))}
+   </div> 
     </div>
+

@@ -1,16 +1,18 @@
 import {React,useContext} from "react";
 import { ProductContext } from "./ProductContext";
-export default function Empty() {
+export  function Empty() {
     console.log("empty component")
-    const{isDropdownOpen,selectedOption,dropdownRef,handleOptionClick, handleItemClick, allSportsCategories,mensCollectionCategories,womensCollectionCategories,handleShopClick}=useContext(ProductContext)
+    const{isDropdownOpen,selectedOption,dropdownRef,handleOptionClick, handleItemClick, allSportsCategories,mensCollectionCategories,womensCollectionCategories}=useContext(ProductContext)
     console.log("Dropdown Open State:", isDropdownOpen);
+
+    
   return (
     <div className="flex-grow ">
     {isDropdownOpen && (
     <div>
       <div
         ref={dropdownRef}
-        className="absolute left-72 top-48 w-4/5 h-3/4 bg-white shadow-lg z-60">
+        className="absolute lg:left-72 lg:top-48 lg:w-4/5 lg:h-3/4 left-0 top-40 bg-white shadow-lg z-60">
         <div className="p-5">
           <div className="flex space-x-5">
             <button

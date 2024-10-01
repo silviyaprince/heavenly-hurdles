@@ -1,6 +1,8 @@
-import { useState ,createContext,useRef} from "react";
+import { useState ,createContext,useRef,useEffect} from "react";
+import { useNavigate } from "react-router-dom";
 export const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
+  const navigate=useNavigate()
    const productData = {
     "Camping": [
       {
@@ -336,6 +338,7 @@ export const ProductProvider = ({ children }) => {
   const dropdownRef = useRef(null);
   const handleShopClick=()=>{
     setDropdownOpen(!isDropdownOpen)
+    navigate("shop")
   }
   const handleOptionClick = (option) => {
     setSelectedOption(option);
@@ -354,7 +357,27 @@ export const ProductProvider = ({ children }) => {
     }
     console.log(displayedProducts[0])
     setDropdownOpen(false);
+    navigate("products")
   };
+
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropdownOpen(false);
+    }
+  };
+  useEffect(() => {
+    if (isDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isDropdownOpen]);
+
+ 
 
   return (
     <ProductContext.Provider
@@ -375,6 +398,7 @@ export const ProductProvider = ({ children }) => {
         mensCollectionCategories,
         womensCollectionCategories,
         handleShopClick,
+        handleClickOutside,
       }}>
       {children}
     </ProductContext.Provider>

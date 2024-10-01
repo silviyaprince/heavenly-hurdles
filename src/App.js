@@ -1,4 +1,4 @@
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import { Addstock } from "./components/Addstock";
 import { Stock } from "./components/Stock";
@@ -7,12 +7,11 @@ import { Dashboard } from "./components/Dashboard";
 import { Layout } from "./components/Layout";
 import { Pagenotfound } from "./components/Pagenotfound";
 import { Signin } from "./components/Signin";
-import { Dropdownmenu } from "./components/Dropdownmenu";
 import { Productlist } from "./Productlist";
 import { ProductProvider } from "./components/ProductContext";
-import Empty from "./components/Empty";
+import {Empty} from "./components/Empty";
 function App() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   return (
     <ProductProvider>

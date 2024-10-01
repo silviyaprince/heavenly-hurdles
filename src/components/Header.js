@@ -1,4 +1,4 @@
-import React from "react";
+import {React} from "react";
 import { MdSpaceDashboard } from "react-icons/md";
 import { HiShoppingBag } from "react-icons/hi2";
 import { PiSignInBold } from "react-icons/pi";
@@ -11,40 +11,29 @@ import { IoNotifications } from "react-icons/io5";
 import { BsCartFill } from "react-icons/bs";
 import { PigeonLogo } from "../image";
 import { IoMdMenu } from "react-icons/io";
-import { GrCart } from "react-icons/gr";
 import { useNavigate } from "react-router-dom";
 
 import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
-import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
-import {
-  ArrowPathIcon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-} from '@heroicons/react/24/outline'
-import { productData } from '../data';
-import { allSportsCategories,mensCollectionCategories,womensCollectionCategories } from '../data';
-import { useState,useRef,useEffect } from 'react'
+
+
+import { useState, useContext } from 'react'
+import { ProductContext } from "./ProductContext";
 
 
 export function Header() {
   const [isFlyoutmenuopen,setisFlyoutmenuopen]=useState(false)
-  
+  const{handleShopClick}=useContext(ProductContext)
   const navigate=useNavigate()
 
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState("All Sports");
-  const [selectedCategoryItem, setSelectedCategoryItem] = useState(null);
-  const [displayedProducts, setDisplayedProducts] = useState([]);
-  const dropdownRef = useRef(null);
+ 
 
-  const handleShopClick = () => {
-    setDropdownOpen(!isDropdownOpen);
-    console.log("Dropdown Open:", !isDropdownOpen);
-    setisFlyoutmenuopen(false)
-    console.log("Flyout Menu Open:",isFlyoutmenuopen );
-  };
+  // const handleShopClick = () => {
+  //   setDropdownOpen(!isDropdownOpen);
+  //   console.log("Dropdown Open:", !isDropdownOpen);
+  //   setisFlyoutmenuopen(false)
+  //   console.log("Flyout Menu Open:",isFlyoutmenuopen );
+
+  // };
   const dropdown = [
     { name: 'DASHBOARD',  icon: MdSpaceDashboard ,handleClick:()=>navigate("/")},
     { name: 'STOCK',  icon: IoStorefrontSharp ,handleClick:()=>navigate("stock")},
@@ -54,58 +43,8 @@ export function Header() {
     {name:'CONTACT US',icon: FaPhoneAlt,handleClick:()=>navigate("contactus")},
     {name:'SIGN OUT',icon: PiSignOutBold,handleClick:()=>navigate("signout")}
   ]
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
-    setSelectedCategoryItem(null);
-    setDisplayedProducts([]); // Close dropdown after selecting an option
-  };
-
-  const handleItemClick = (item) => {
-    setSelectedCategoryItem(item);
-    const categoryProducts = productData[item];
-
-    if (categoryProducts) {
-      setDisplayedProducts(categoryProducts);
-    } else {
-      setDisplayedProducts([]);
-    }
-    setDropdownOpen(false);
-  };
-
-  const handleClickOutside = (event) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-      setDropdownOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    if (isDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [isDropdownOpen]);
-
-  const [mode, setMode] = useState("light");
-
-  useEffect(() => {
-    if (mode == "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [mode]);
-
-  const handleModeSwitch = () => {
-    setMode(mode === "dark" ? "light" : "dark");
-  };
-
-  
-  return (
+ 
+ return (
     <div>
     <nav className=" flex w-full lg:w-full lg:h-40 lg:flex-1 flex-col ">
       <div className="lg:p-3  flex flex-row lg:flex-1 bg-primary2 h-24 lg:h-32    lg:gap-3 lg:justify-evenly justify-around  ">
@@ -178,120 +117,7 @@ export function Header() {
         />
       </div>
     </nav>
-    <div className="flex-grow relative">
-    {isDropdownOpen && (
-      <div
-        ref={dropdownRef}
-        className="absolute left-0 top-0 w-full h-screen bg-white shadow-lg z-60">
-        <div className="p-5">
-          <div className="flex space-x-5">
-            <button
-              onClick={() => handleOptionClick("All Sports")}
-              className={`rounded-md px-3 py-2 text-md font-medium font-display font-semibold  ${
-                selectedOption === "All Sports"
-                  ? "bg-fuchsia-800 text-white"
-                  : "text-black"
-              }`}>
-              ALL SPORTS
-            </button>
-            <button
-              onClick={() => handleOptionClick("Men's Collection")}
-              className={`rounded-md px-3 py-2 text-md font-medium font-display font-semibold  ${
-                selectedOption === "Men's Collection"
-                  ? "bg-fuchsia-800 text-white"
-                  : "text-black"
-              }`}>
-              MEN'S COLLECTION
-            </button>
-            <button
-              onClick={() => handleOptionClick("Women's Collection")}
-              className={`rounded-md px-3 py-2 text-md font-medium font-display font-semibold  ${
-                selectedOption === "Women's Collection"
-                  ? "bg-fuchsia-800 text-white"
-                  : "text-black"
-              }`}>
-              WOMEN'S COLLECTION
-            </button>
-          </div>
-          <div className="mt-5">
-            {selectedOption === "All Sports" && (
-              <div className="flex flex-wrap gap-8">
-                {allSportsCategories.map((category, index) => (
-                  <div key={index} className="flex flex-col w-64">
-                    {/* Category Heading */}
-                    <h3 className="text-lg font-bold mb-3 text-blue-700">
-                      {category.title}
-                    </h3>
-
-                    {/* Category Items */}
-                    <ul className="space-y-2">
-                      {category.items.map((item, idx) => (
-                        <li
-                          key={idx}
-                          onClick={() => handleItemClick(item)}
-                          className="cursor-pointer hover:text-blue-500">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
-            {selectedOption === "Men's Collection" && (
-              <div className="flex flex-wrap gap-8">
-                {mensCollectionCategories.map((category, index) => (
-                  <div key={index} className="flex flex-col w-64">
-                    {/* Category Heading */}
-                    <h3 className="text-lg font-bold mb-3 text-blue-700">
-                      {category.title}
-                    </h3>
-
-                    {/* Category Items */}
-                    <ul className="space-y-2">
-                      {category.items.map((item, idx) => (
-                        <li
-                          key={idx}
-                          onClick={() => handleItemClick(item)}
-                          className="cursor-pointer hover:text-blue-500">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
-            {selectedOption === "Women's Collection" && (
-              <div className="flex flex-wrap gap-8">
-                {womensCollectionCategories.map((category, index) => (
-                  <div key={index} className="flex flex-col w-64">
-                    {/* Category Heading */}
-                    <h3 className="text-lg font-bold mb-3 text-blue-700">
-                      {category.title}
-                    </h3>
-
-                    {/* Category Items */}
-                    <ul className="space-y-2">
-                      {category.items.map((item, idx) => (
-                        <li
-                          key={idx}
-                          onClick={() => handleItemClick(item)}
-                          className="cursor-pointer hover:text-blue-500">
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-     
-    )}
-    </div>
+   
     </div>
   
   );
