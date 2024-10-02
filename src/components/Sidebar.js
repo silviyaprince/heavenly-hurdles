@@ -34,7 +34,7 @@ const{ handleShopClick }=useContext(ProductContext)
       icon: <HiShoppingBag />,
       handleClick: handleShopClick,
     },
-    { label: "CART", icon: <GrCart />, handleClick: () => navigate("/cart") },
+    { label: "CART", icon: <GrCart />, handleClick: () => navigate("cart") },
     {
       label: "ADD STOCK",
       icon: <RiAddLine />,

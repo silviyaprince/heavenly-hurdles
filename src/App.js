@@ -10,6 +10,7 @@ import { Signin } from "./components/Signin";
 import { Productlist } from "./Productlist";
 import { ProductProvider } from "./components/ProductContext";
 import {Empty} from "./components/Empty";
+import{Cart} from "./components/Cart";
 function App() {
   // const navigate = useNavigate();
 
@@ -26,7 +27,7 @@ function App() {
           <Route path="stock" element={<Stock />} />
           <Route path="shop" element={<Empty />} />
           <Route path="products" element={<Productlist />} />
-
+          <Route path="cart" element={<Cart />} />
         </Route>
         <Route path="*" element={<Pagenotfound />} />
       </Routes>

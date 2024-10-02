@@ -82,7 +82,7 @@ export function Header() {
     </Popover>
           
         <div className="flex flex-row justify-center">
-          <div className="text-2xl xl:text-5xl xl:mr-60 md:mr-10 italic text-white font-display font-extrabold mt-7">
+          <div className="text-2xl xl:text-4xl xl:mr-48 lg:text-4xl lg:mr-12 md:mr-10 italic text-white font-display font-extrabold mt-7">
             Heavenly Hurdles
           </div>
           <img
@@ -99,7 +99,7 @@ export function Header() {
           <input
             type="text"
             placeholder="Search..."
-            className="  text-2xl px-3 pl-12 focus:outline-none active:outline-none h-10 w-20 xl:w-[34rem] lg:w-40 border  border-gray-500 md:border-gray-500 rounded-sm"
+            className="  text-2xl px-3 pl-12 xl:w-80 focus:outline-none active:outline-none h-10 w-20 xl:w-[34rem] lg:w-40 border  border-gray-500 md:border-gray-500 rounded-sm"
           />
         </div>
         <button

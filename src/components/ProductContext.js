@@ -1,48 +1,57 @@
-import { useState ,createContext,useRef,useEffect} from "react";
+import { useState, createContext, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 export const ProductContext = createContext();
 export const ProductProvider = ({ children }) => {
-  const navigate=useNavigate()
-   const productData = {
-    "Camping": [
+  const navigate = useNavigate();
+  const productData = {
+    Camping: [
       {
-        id:1,
-        imageAlt:"camping1",
+        id: 1,
+        imageAlt: "camping1",
         pic: "https://contents.mediadecathlon.com/p2754239/b4c15b50e2f8c081cc55700c22a8301a/p2754239.jpg?format=auto&quality=70&f=650x0",
         name: "QUECHUA",
         rating: 8,
         description: "2 Person Camping Tent - MH100 Grey",
-        price: "2,499",
+        price: 3,
+        mrp: "2600",
+        quantity: 34,
+       
       },
       {
-        id:2,
-        imageAlt:"camping2",
+        id: 2,
+        imageAlt: "camping2",
         pic: "https://contents.mediadecathlon.com/p1259842/2345530d33e5f5342a7311a10beaaa18/p1259842.jpg?format=auto&quality=70&f=650x0",
         name: "QUECHUA",
         rating: 8.6,
         description: "Camping Tent 2 Seconds - 2-Person",
         price: "4,999",
+        mrp: "5,300",
+        quantity: "",
       },
       {
-        id:3,
-        imageAlt:"camping3",
+        id: 3,
+        imageAlt: "camping3",
         pic: "https://contents.mediadecathlon.com/p1801167/7de7cfb4280922bbcd9cb6f592477254/p1801167.jpg?format=auto&quality=70&f=650x0",
         name: "FORCLAZ",
         rating: 7,
         description: "Dome Trekking Tent - 2 person - MT100",
         price: "5,999",
+        mrp: "6,200",
+        quantity: "",
       },
       {
-        id:4,
-        imageAlt:"camping4",
+        id: 4,
+        imageAlt: "camping4",
         pic: "https://contents.mediadecathlon.com/p760385/b152015dc9fa85853c9940c83d11fd7a/p760385.jpg?format=auto&quality=70&f=650x0",
         name: "QUECHUA",
         rating: 8.6,
         description: "Camping Stool (Foldable) - Green",
         price: "599",
+        mrp: "650",
+        quantity: "",
       },
     ],
-  
+
     "Hiking & Trekking": [
       {
         pic: "https://contents.mediadecathlon.com/p2629724/00e95e29051097a1f98510f2775ade01/p2629724.jpg?format=auto&quality=70&f=650x0",
@@ -73,7 +82,7 @@ export const ProductProvider = ({ children }) => {
         price: "599",
       },
     ],
-  
+
     "Skiing & Snowboarding": [
       {
         pic: "https://contents.mediadecathlon.com/p2579004/314f43a6e65a068a01a96acda244287e/p2579004.jpg?format=auto&quality=70&f=768x0",
@@ -111,7 +120,7 @@ export const ProductProvider = ({ children }) => {
         price: "2,499",
       },
     ],
-  
+
     "Rock Climbing": [
       {
         pic: "https://contents.mediadecathlon.com/p1548908/80efccd3dff928d4055d3bb04c457ee7/p1548908.jpg?format=auto&quality=70&f=1024x0",
@@ -143,7 +152,7 @@ export const ProductProvider = ({ children }) => {
         price: "4,499",
       },
     ],
-  
+
     "Fitness Cardio": [
       {
         pic: "https://contents.mediadecathlon.com/p2688748/1b011f5deca3972f0bf7419299baf3df/p2688748.jpg?format=auto&quality=70&f=1024x0",
@@ -176,7 +185,7 @@ export const ProductProvider = ({ children }) => {
         price: "2,599",
       },
     ],
-  
+
     "Body Building": [
       {
         pic: "https://contents.mediadecathlon.com/p2720245/2bb51934919b89faf649a33307e27e11/p2720245.jpg?format=auto&quality=70&f=1024x0",
@@ -211,7 +220,7 @@ export const ProductProvider = ({ children }) => {
     ],
   };
 
-   const allSportsCategories = [
+  const allSportsCategories = [
     {
       title: "Outdoor Sports",
       items: [
@@ -244,7 +253,7 @@ export const ProductProvider = ({ children }) => {
     { title: "Roller Sports", items: ["Skating", "Skateboarding", "Scooter"] },
   ];
 
-   const mensCollectionCategories = [
+  const mensCollectionCategories = [
     {
       title: "Men Topwear",
       items: [
@@ -336,10 +345,10 @@ export const ProductProvider = ({ children }) => {
   const [selectedCategoryItem, setSelectedCategoryItem] = useState(null);
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const dropdownRef = useRef(null);
-  const handleShopClick=()=>{
-    setDropdownOpen(!isDropdownOpen)
-    navigate("shop")
-  }
+  const handleShopClick = () => {
+    setDropdownOpen(!isDropdownOpen);
+    navigate("shop");
+  };
   const handleOptionClick = (option) => {
     setSelectedOption(option);
     setSelectedCategoryItem(null);
@@ -355,9 +364,9 @@ export const ProductProvider = ({ children }) => {
     } else {
       setDisplayedProducts([]);
     }
-    console.log(displayedProducts[0])
+    console.log(displayedProducts[0]);
     setDropdownOpen(false);
-    navigate("products")
+    navigate("products");
   };
 
   const handleClickOutside = (event) => {
@@ -376,8 +385,6 @@ export const ProductProvider = ({ children }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isDropdownOpen]);
-
- 
 
   return (
     <ProductContext.Provider
