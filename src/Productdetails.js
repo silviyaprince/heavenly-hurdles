@@ -1,9 +1,17 @@
-
-
+import { useState,useEffect } from "react";
+import { useNavigate,useParams } from "react-router-dom";
+import {API} from "./global";
 export function Productdetails() {
-
+// const {category}=useParams();
     const { productid } = useParams();
-    const product=productlist[productid]
+    const [product,setProduct]=useState({})
+    // useEffect(()=>{
+    //   fetch(`${API}/products/${category}/${productid}`,{
+    //     method:"GET"
+    //   })
+    //   .then((res)=>res.json)
+    //   .then((data)=>setProduct(data))
+    // })
     const navigate=useNavigate();
     return (
     <div className="detail">

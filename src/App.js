@@ -8,12 +8,13 @@ import { Layout } from "./components/Layout";
 import { Pagenotfound } from "./components/Pagenotfound";
 import { Signin } from "./components/Signin";
 import { Productlist } from "./Productlist";
-import { ProductProvider } from "./components/ProductContext";
+import { ProductContext, ProductProvider } from "./components/ProductContext";
 import {Empty} from "./components/Empty";
 import{Cart} from "./components/Cart";
+import { useContext } from "react";
+
 function App() {
   // const navigate = useNavigate();
-
   return (
     <ProductProvider>
     <div>
@@ -26,7 +27,7 @@ function App() {
           <Route path="contactus" element={<Contactus />} />
           <Route path="stock" element={<Stock />} />
           <Route path="shop" element={<Empty />} />
-          <Route path="products" element={<Productlist />} />
+          <Route path="products/:selectedCategoryItem" element={<Productlist />} />
           <Route path="cart" element={<Cart />} />
         </Route>
         <Route path="*" element={<Pagenotfound />} />
