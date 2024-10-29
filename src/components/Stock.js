@@ -1,5 +1,6 @@
-import React from "react";
-import { useState,useContext } from "react";
+import React  from "react";
+import{API} from "../global";
+import { useState,useContext,useEffect } from "react";
 import {
   Label,
   Listbox,
@@ -314,7 +315,27 @@ export  function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const {productData,setProductData,setDisplayedProducts,selectedCategoryItem}=useContext(ProductContext)
 
+ //
+ const getProducts = async () => {
+  try {
+    const res = await fetch(`${API}/products/${selectedCategoryItem}`, {
+      method: "GET",
+    });
+    const data = await res.json();
+    setDisplayedProducts(data);
+    console.log(data)
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+};
+
+useEffect(() => {
+  getProducts();
+}, [selectedCategoryItem]);
+
+  //
   function createData(id, name, category,mrp, price, quantity) {
     const value = quantity * price;
     return {
@@ -327,7 +348,6 @@ export  function EnhancedTable() {
      value,
     };
   }
-  const {productData}=useContext(ProductContext)
   // console.log(productData.products)
   const rows = Object.entries(productData)
   .flatMap(([category ,products])=> // Flatten the arrays
@@ -444,6 +464,7 @@ export  function EnhancedTable() {
                     >
                       {row.name}
                     </TableCell>
+
                     <TableCell align="right">{row.category}</TableCell>
                     <TableCell align="right">{row.mrp}</TableCell>
                     <TableCell align="right">{row.price}</TableCell>

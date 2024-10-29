@@ -3,15 +3,21 @@ import { useState } from "react";
 export function Addstock() {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [subcategories, setSubcategories] = useState([]);
+  
   const categories = {
     "All sports": ["Outdoor Sports", "Fitness Sports & Yoga", "Water Sports", "Racket Sports","Team Sports","Running & Walking","Cycling","Roller Sports"],
     "Mens collection": ["Men Topwear", "Men Bottomwear","Men Footwear", "Men Jackets & Sweatshirts","Men Innerwear"],
     "Womens collection": ["Women Top Wear", "Women Footwear", "Women Bottomwear","Women Jackets","Women Innerwear"],
   };
+
+ 
+
+
   const handleCategoryChange = (e) => {
     const category = e.target.value;
     setSelectedCategory(category);
     setSubcategories(categories[category] || []);
+   
   };
   return (
     <form className="">
@@ -115,6 +121,8 @@ export function Addstock() {
           </div>
         </div>
       )}
+
+      
           <div className="col-span-full">
             <label htmlFor="productrating" className="block text-sm font-medium leading-6 text-gray-900">
              Product rating
