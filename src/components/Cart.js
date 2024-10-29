@@ -30,8 +30,8 @@ import { ProductContext } from './ProductContext'
 
 export  function Cart() {
   const [open, setOpen] = useState(true)
-  const{cartItems,addtocart,removefromcart,displayedProducts ,getTotalCartAmount}=useContext(ProductContext)
-  const totalAmount=getTotalCartAmount()
+  const {displayedProducts,addtocart,removefromcart,totalAmount,cartItems,getTotalCartAmount}=useContext(ProductContext)
+  console.log(totalAmount)
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -67,7 +67,9 @@ export  function Cart() {
                     <div className="flow-root">
                       <ul role="list" className="-my-6 divide-y divide-gray-200">
                         {displayedProducts.map((product) => {
-                          if(cartItems[product.id]!==0){
+                          if(cartItems[product.id]>0){
+                            console.log(cartItems[product.id])
+                            return(
                          <li key={product.id} className="flex py-6">
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                               <img
@@ -88,7 +90,7 @@ export  function Cart() {
                                 <p className="mt-1 text-sm text-gray-500">{product.color}</p>
                               </div>
                               <div className="flex flex-1 items-end justify-between text-sm">
-                                <p className="text-gray-500">Qty {product.quantity}</p>
+                                <p className="text-gray-500">Qty {cartItems[product.id]}</p>
 
                                 <div className="flex">
                                   <button type="button" className="font-medium text-indigo-600 hover:text-indigo-500">
@@ -98,6 +100,7 @@ export  function Cart() {
                               </div>
                             </div>
                           </li>
+                            )
                           }
 })}
                       </ul>
