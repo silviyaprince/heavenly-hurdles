@@ -16,6 +16,7 @@ export const ProductProvider = ({ children }) => {
   };
   const [cartItems, setCartItems] = useState(getDefaultCart());
   console.log(cartItems);
+
   const addtocart = (productId) => {
     setCartItems((prevCart) => {
       const currentAmount = prevCart[productId] || 0; // Handle undefined cases
@@ -86,6 +87,7 @@ export const ProductProvider = ({ children }) => {
   const totalAmount = getTotalCartAmount();
 
   const navigate = useNavigate();
+  //below are the variables and functions for drop down functionality under shop menu
 
   const allSportsCategories = [
     {
@@ -207,6 +209,7 @@ export const ProductProvider = ({ children }) => {
       items: ["Sports Bra", "Women Thermal Innerwear"],
     },
   ];
+
   const [productData, setProductData] = useState([]);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState("All Sports");
@@ -254,6 +257,8 @@ export const ProductProvider = ({ children }) => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isDropdownOpen]);
+//end of dropdown functionality under shop menu
+
 
   const getProducts = async () => {
     if (selectedCategoryItem) {
@@ -275,6 +280,163 @@ export const ProductProvider = ({ children }) => {
     }
   }, [selectedCategoryItem]);
 
+
+  //dropdown  for addstock menu
+  const categories={
+    allSportsCategories: [
+      {
+        title: "Outdoor Sports",
+        items: [
+          "Hiking&Trekking",
+          "Camping",
+          "Skiing&Snowboarding",
+          "RockClimbing",
+          "Fishing",
+          "HorseRiding",
+        ],
+      },
+      {
+        title: "Fitness Sports & Yoga",
+        items: ["Fitness Cardio", "Body Building", "Kids Sports", "Yoga"],
+      },
+      {
+        title: "Water Sports",
+        items: ["Swimming", "Sailing", "Surfing & Beach Sports"],
+      },
+      {
+        title: "Racket Sports",
+        items: ["Badminton", "Tennis", "Table tennis", "Squash"],
+      },
+      {
+        title: "Team Sports",
+        items: ["Football", "Basketball", "Cricket", "Volleyball", "Hockey"],
+      },
+      { title: "Running & Walking", items: ["Running", "Walking"] },
+      { title: "Cycling", items: ["Cycling", "Cycle Servicing"] },
+      { title: "Roller Sports", items: ["Skating", "Skateboarding", "Scooter"] },
+    ],
+    
+     mensCollectionCategories : [
+      {
+        title: "Men Topwear",
+        items: [
+          "Men Athleisure",
+          "Men Cotton T-shirt",
+          "Men Tank Tops",
+          "Men Shirts",
+          "Men Fleeces & Pullovers",
+        ],
+      },
+      {
+        title: "Men Bottomwear",
+        items: [
+          "Men Shorts",
+          "Men Track Pants & Joggers",
+          "Men Trousers & Chinos",
+          "Men Tights & Compression",
+        ],
+      },
+      {
+        title: "Men Footwear",
+        items: [
+          "Men Sports Shoes",
+          "Men Sandals",
+          "Men Flip Flops & Aqua Shoes",
+          "Men Running Shoes",
+          "Men Football Boots",
+          "Socks",
+        ],
+      },
+      {
+        title: "Men Jackets & Sweatshirts",
+        items: [
+          "Men Raincoat & Ponchos",
+          "Men Winter Jackets",
+          "Men Sports Jackets",
+        ],
+      },
+      { title: "Men Innerwear", items: ["Men Thermals", "Men Brief Underwear"] },
+    ],
+    womensCollectionCategories :[
+      {
+        title: "Women Top Wear",
+        items: [
+          "Women T-shirts",
+          "Women Tank Tops",
+          "Wome Crop Tops",
+          "Women Swim Costumes",
+          "Women Raincoats",
+        ],
+      },
+      {
+        title: "Women Footwear",
+        items: [
+          "Women Sports Shoes",
+          "Women Flip Flops",
+          "Women Walking Shoes",
+          "Women Outdoor Shoes & Boots",
+          "Socks",
+        ],
+      },
+      {
+        title: "Women Bottomwear",
+        items: [
+          "Women Shorts",
+          "Women Leggings",
+          "Women Track Pants",
+          "Women Trousers",
+          "Women Skirts",
+        ],
+      },
+      {
+        title: "Women Jackets",
+        items: [
+          "Women Raincoats",
+          "Women Sweaters",
+          "Women Winter Jackets",
+          "Women Snow Jackets",
+        ],
+      },
+      {
+        title: "Women Innerwear",
+        items: ["Sports Bra", "Women Thermal Innerwear"],
+      },
+    ]
+
+  }
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedItem, setSelectedItem] = useState("");
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+    setSelectedSubcategory("");
+    setSelectedItem("");
+  };
+
+  const handleSubcategoryChange = (e) => {
+    setSelectedSubcategory(e.target.value);
+    setSelectedItem("");
+  };
+
+  const handleItemChange = (e) => {
+    setSelectedItem(e.target.value);
+  };
+
+  const getSubcategories = () => {
+    if (selectedCategory) {
+      return categories[selectedCategory];
+    }
+    return [];
+  };
+
+  const getItems = () => {
+    const subcategory = getSubcategories().find((cat) => cat.title === selectedSubcategory);
+    return subcategory ? subcategory.items : [];
+  };
+  //end of dropdown under addstock menu
+
+
   return (
     <ProductContext.Provider
       value={{
@@ -290,6 +452,7 @@ export const ProductProvider = ({ children }) => {
         handleOptionClick,
         handleItemClick,
         productData,
+        setProductData,
         allSportsCategories,
         mensCollectionCategories,
         womensCollectionCategories,
@@ -302,6 +465,7 @@ export const ProductProvider = ({ children }) => {
         removefromcart,
         getTotalCartAmount,
         totalAmount,
+        selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems
       }}>
       {children}
     </ProductContext.Provider>

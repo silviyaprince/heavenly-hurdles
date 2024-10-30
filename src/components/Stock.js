@@ -1,14 +1,7 @@
 import React  from "react";
 import{API} from "../global";
 import { useState,useContext,useEffect } from "react";
-import {
-  Label,
-  Listbox,
-  ListboxButton,
-  ListboxOption,
-  ListboxOptions,
-} from "@headlessui/react";
-import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
+
 
 import { ProductContext } from "./ProductContext";
 import PropTypes from 'prop-types';
@@ -38,85 +31,67 @@ import Button from '@mui/material/Button';
 
 
 export function Stock() {
+  const{selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems}=useContext(ProductContext)
 
-  const people = [
-    {
-      id: 1,
-      name: "All Sports",
-      avatar:
-        "https://repfitness.com/cdn/shop/files/HexDB-Studio-thumbnail.jpg?v=1699558927",
-    },
-    {
-      id: 2,
-      name: "Mens Collection",
-      avatar:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80",
-    },
-    {
-      id: 3,
-      name: "Womens Collection",
-      avatar:
-        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-    },
-  ];
-  const [selected, setSelected] = useState(people[1]);
+  
+
+
   return (
     <div className="flex flex-col ">
-      <div>
-        <div></div>
-        <div className="lg:w-64 ">
-          <Listbox value={selected} onChange={setSelected}>
-            <Label className="block text-md font-bold  font-display leading-6 text-gray-900">
-              SELECT CATEGORY
-            </Label>
-            <div className="relative mt-2">
-              <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary2 sm:text-sm sm:leading-6 lg:text-xl">
-                <span className="flex items-center">
-                  <img
-                    alt=""
-                    src={selected.avatar}
-                    className="h-5 w-5 flex-shrink-0 rounded-full"
-                  />
-                  <span className="ml-3 block truncate">{selected.name}</span>
-                </span>
-                <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
-                  <ChevronUpDownIcon
-                    aria-hidden="true"
-                    className="h-5 w-5 text-gray-400"
-                  />
-                </span>
-              </ListboxButton>
-
-              <ListboxOptions
-                transition
-                className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm">
-                {people.map((person) => (
-                  <ListboxOption
-                    key={person.id}
-                    value={person}
-                    className="group relative cursor-default select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-primary2 data-[focus]:text-white lg:text-xl">
-                    <div className="flex items-center">
-                      <img
-                        alt=""
-                        src={person.avatar}
-                        className="h-5 w-5 flex-shrink-0 rounded-full"
-                      />
-                      <span className="ml-3 block truncate font-normal group-data-[selected]:font-semibold">
-                        {person.name}
-                      </span>
-                    </div>
-
-                    <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600 group-data-[focus]:text-white [.group:not([data-selected])_&]:hidden">
-                      <CheckIcon aria-hidden="true" className="h-5 w-5" />
-                    </span>
-                  </ListboxOption>
-                ))}
-              </ListboxOptions>
-            </div>
-          </Listbox>
+       <div className="sm:col-span-3">
+         <label htmlFor="productcategory" className="block text-sm font-medium leading-6 text-gray-900">
+          Product category
+        </label>
+           <div className="mt-2"> 
+        {/* Category Dropdown */}
+        <select value={selectedCategory} onChange={handleCategoryChange}>
+          <option value="">Select Category</option>
+          {Object.keys(categories).map((categoryKey) => (
+            <option key={categoryKey} value={categoryKey}>
+              {categoryKey.replace(/([A-Z])/g, " $1")} {/* Converts camelCase to spaced words */}
+            </option>
+          ))}
+        </select>
         </div>
-       
-      </div>
+        </div>
+  
+        <div className="sm:col-span-3 mt-4">
+          <label htmlFor="productsubcategory" className="block text-sm font-medium leading-6 text-gray-900">
+            Product subcategory
+          </label>
+          <div className="mt-2">
+        {selectedCategory && (
+          <select value={selectedSubcategory} onChange={handleSubcategoryChange}>
+            <option value="">Select Subcategory</option>
+            {getSubcategories().map((subcategory) => (
+              <option key={subcategory.title} value={subcategory.title}>
+                {subcategory.title}
+              </option>
+            ))}
+          </select>
+        )}
+        </div>
+        </div>
+  
+        {/* Item Dropdown */}
+        <div className="sm:col-span-3 mt-4">
+          <label htmlFor="productsubcategory" className="block text-sm font-medium leading-6 text-gray-900">
+           Category Item
+          </label>
+          <div className="mt-2">
+        {selectedSubcategory && (
+          <select value={selectedItem} onChange={handleItemChange}>
+            <option value="">Select Item</option>
+            {getItems().map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+        )}
+  </div>
+  </div>
+
       <div className="mt-24" id="stocktablescroll">
         <EnhancedTable/>
 
@@ -147,17 +122,12 @@ function getComparator(order, orderBy) {
 
 const headCells = [
   {
-    id: 'name',
+    id: 'description',
     numeric: false,
     disablePadding: true,
     label: 'Product Name',
   },
-  {
-    id: 'category',
-    numeric: false,
-    disablePadding: true,
-    label: 'Category',
-  },
+  
   {
     id: 'mrp',
     numeric: true,
@@ -308,40 +278,45 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export  function EnhancedTable() {
-
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const {productData,setProductData,setDisplayedProducts,selectedCategoryItem}=useContext(ProductContext)
+  const {productData,setProductData,setDisplayedProducts,selectedCategoryItem,selectedItem}=useContext(ProductContext);
 
  //
- const getProducts = async () => {
-  try {
-    const res = await fetch(`${API}/products/${selectedCategoryItem}`, {
-      method: "GET",
-    });
-    const data = await res.json();
-    setDisplayedProducts(data);
-    console.log(data)
-  } catch (error) {
-    console.error("Error fetching products:", error);
+//  
+
+const getProducts = async () => {
+  if (selectedItem) {
+    try {
+      const response = await fetch(
+        `${API}/products/${selectedItem}`
+      );
+      const data = await response.json();
+      setProductData(data);
+      
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
   }
 };
 
 useEffect(() => {
-  getProducts();
-}, [selectedCategoryItem]);
+  if (selectedItem) {
+    console.log(selectedItem)
+    getProducts();
+  }
+}, [selectedItem]);
 
   //
-  function createData(id, name, category,mrp, price, quantity) {
-    const value = quantity * price;
+  function createData(id, description, mrp, price, quantity) {
+    const value = quantity * Number(price.replace(/,/g, ""));
     return {
       id,
-      name,
-      category,
+      description,
       mrp,
       price,
       quantity,
@@ -349,11 +324,9 @@ useEffect(() => {
     };
   }
   // console.log(productData.products)
-  const rows = Object.entries(productData)
-  .flatMap(([category ,products])=> // Flatten the arrays
-  products.map(product => 
-    createData(product.id, product.name, category, product.mrp, product.price,product.quantity,product.value)
-  ));
+  const rows = productData.map(product => 
+    createData(product.id, product.description,  product.mrp, product.price,product.quantity,product.value)
+  );
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -462,10 +435,10 @@ useEffect(() => {
                       scope="row"
                       padding="none"
                     >
-                      {row.name}
+                      {row.description}
                     </TableCell>
 
-                    <TableCell align="right">{row.category}</TableCell>
+                   
                     <TableCell align="right">{row.mrp}</TableCell>
                     <TableCell align="right">{row.price}</TableCell>
                     <TableCell align="right">{row.quantity}</TableCell>
