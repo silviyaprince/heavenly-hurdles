@@ -2,11 +2,10 @@ import React  from "react";
 import{API} from "../global";
 import { useState,useContext,useEffect } from "react";
 
-
+import { useMemo } from "react";
 import { ProductContext } from "./ProductContext";
-import PropTypes from 'prop-types';
-import { alpha } from '@mui/material/styles';
-import Box from '@mui/material/Box';
+import EditIcon from '@mui/icons-material/Edit';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -30,12 +29,198 @@ import { visuallyHidden } from '@mui/utils';
 import Button from '@mui/material/Button';
 
 
-export function Stock() {
-  const{selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems}=useContext(ProductContext)
 
+
+const columns = [
+  { id: 'name', label: 'Name', minWidth: 150 },
+  { id: 'price', label: 'Price', minWidth: 150 },
+  { id: 'mrp', label: 'MRP', minWidth: 100 },
+  { id: 'quantity', label: 'Quantity', minWidth: 160 },
+  { id: 'description', label: 'Description', minWidth: 160 },
+  { id: 'value', label: 'Value', minWidth: 160 },
+
+];
+
+const rows = [
+  
+ 
+
+
+  // Add more rows as needed with unique `id` values
+];
+
+
+export function Stock() {
+  const{selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems,productData,setProductData}=useContext(ProductContext)
+
+const rows=useMemo(() => productData.map((product) => ({ ...product })), [productData]);
   
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selected, setSelected] = useState([]); // Stores selected row IDs
 
+  const handleSelectAllClick = (event) => {
+    if (event.target.checked) {
+      const newSelected = rows.map((row) => row.id); // Selects all rows
+      setSelected(newSelected);
+      return;
+    }
+    setSelected([]); // Deselects all rows
+  };
+
+  const handleClick = (id) => {
+    const selectedIndex = selected.indexOf(id);
+    let newSelected = [];
+
+    if (selectedIndex === -1) {
+      // Row is not selected, so add it to the selected array
+      newSelected = [...selected, id];
+    } else {
+      // Row is already selected, so remove it from the selected array
+      newSelected = selected.filter((selectedId) => selectedId !== id);
+    }
+
+    setSelected(newSelected); // Update the selected state
+  };
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
+  const isSelected = (id) => selected.indexOf(id) !== -1;
+  const getProducts = async () => {
+    if (selectedItem) {
+      try {
+        const response = await fetch(
+          `${API}/products/${selectedItem}`
+        );
+        const data = await response.json();
+        setProductData(data);
+        
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    }
+  };
+  
+  useEffect(() => {
+    if (selectedItem) {
+      console.log(selectedItem)
+      getProducts();
+    }
+  }, [selectedItem]);
+
+  const handleEdit = () => {
+    const newEditingData = selected.reduce((acc, id) => {
+      const product = rows.find((row) => row.id === id);
+      acc[id] = { ...product }; // Initialize with current row data
+      return acc;
+    }, {});
+    setEditingData(newEditingData);
+  };
+const handleDelete = async () => {
+  if (selected.length === 0) return; // Exit if no rows are selected
+
+  try {
+    // Prepare the request body with the IDs of the selected rows
+    const body = { ids: selected };
+    console.log(typeof(selected))
+    console.log('Selected IDs to delete:', selected);
+    // Send a DELETE request to delete many products at once
+    const response = await fetch(`${API}/products/${selectedItem}/deleteMany`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (response.ok) {
+      // Update local state by filtering out deleted rows
+      const updatedData = productData.filter((product) => !selected.includes(product.id));
+      setProductData(updatedData);
+
+      // Clear the selected rows
+      setSelected([]);
+    } else {
+      console.error("Error deleting products:", response.statusText);
+    }
+  } catch (error) {
+    console.error("Error deleting products:", error);
+  }
+};
+
+const [editingData, setEditingData] = useState({}); // Object to hold editing data for selected products
+
+  const handleSelectRow = (id) => {
+    setSelected((prev) => 
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
+  };
+
+  const handleInputChange = (id, field, value) => {
+    setEditingData((prev) => ({
+      ...prev,
+      [id]: {
+        ...prev[id],
+        [field]: value,
+      },
+    }));
+  };
+  
+  const handleSave = async () => {
+    // Prepare data to send to the backend
+    const updates = selected.map(id => ({
+      id,
+      data: editingData[id] || {}
+    }));
+    
+    console.log('Updates to  sent:', ); // Log updates
+  
+    // Make API calls to update the products in the database
+    try {
+      const response = await fetch(`${API}/products/${selectedItem}/updateMany`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updates), // Sending an array of updates
+      });
+  
+      if (response.ok) {
+        const updatedProducts = await response.json();
+        console.log('Server response:', updatedProducts); // Log server response
+  
+        const updatedArray = Array.isArray(updatedProducts) 
+          ? updatedProducts 
+          : Object.values(updatedProducts); // Convert object to array if necessary
+  
+        updatedArray.forEach(up => {
+          console.log('Item in updatedArray:', up);
+        });
+  
+        setProductData((prev) =>
+          prev.map((product) => {
+            const updatedProduct = updatedArray.find(up => up?.id === product.id);
+            return updatedProduct ? { ...product, ...updatedProduct } : product;
+          })
+        );
+  
+        setSelected([]);
+        setEditingData({});
+      } else {
+        console.error('Error updating products:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating products:', error);
+    }
+  };
   return (
     <div className="flex flex-col ">
        <div className="sm:col-span-3">
@@ -93,403 +278,93 @@ export function Stock() {
   </div>
 
       <div className="mt-24" id="stocktablescroll">
-        <EnhancedTable/>
+        
+      <Paper style={{ width: '100%', overflow: 'hidden' }}>
+      <h2>STOCK DETAILS</h2>
+      {selected.length > 0 && (
+  <div style={{ display: 'flex', justifyContent: 'flex-end', margin: '10px' }}>
+    <IconButton color="primary" >
+      <EditIcon  onClick={handleEdit}/>
+    </IconButton>
+    <IconButton  onClick={handleDelete} color="secondary" >
+      <DeleteIcon   />
+    </IconButton>
+  </div>
+)}
+      <TableContainer>
+        <Table stickyHeader aria-label="checkbox table">
+          <TableHead>
+            <TableRow>
+              <TableCell padding="checkbox">
+                <Checkbox
+                  color="primary"
+                  indeterminate={selected.length > 0 && selected.length < rows.length}
+                  checked={rows.length > 0 && selected.length === rows.length}
+                  onChange={handleSelectAllClick}
+                  inputProps={{ 'aria-label': 'select all rows' }}
+                />
+              </TableCell>
+              {columns.map((column) => (
+                <TableCell key={column.id} style={{ minWidth: column.minWidth }}>
+                  {column.label}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              const isItemSelected = isSelected(row.id);
+              const value = row.quantity * Number(row.price.replace(/,/g, ""));
+              return (
+                <TableRow
+                  hover
+                  role="checkbox"
+                  tabIndex={-1}
+                  key={row.id}
+                  selected={isItemSelected}
+                  onClick={() => handleClick(row.id)}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox
+                      color="primary"
+                      checked={isItemSelected}
+                      onClick={(e) => e.stopPropagation()} // Prevent row click from triggering select all
+                      onChange={() => handleClick(row.id)}
+                      inputProps={{ 'aria-labelledby': `checkbox-${row.id}` }}
+                    />
+                  </TableCell>
+                  {columns.map((column) => (
+                    <TableCell key={column.id}> {isItemSelected && editingData[row.id] ? (
+                      <input
+                        type="text"
+                        value={editingData[row.id][column.id] || ""}
+                        onChange={(e) => handleInputChange(row.id, column.id, e.target.value)}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    ) : (
+                      column.id === 'value' ? value.toLocaleString() : row[column.id]
+                    )}</TableCell>
+                  ))}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 20]}
+        component="div"
+        count={rows.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+    </Paper>
 
-
-     <div className="mt-7">   <Button  variant="contained">SAVE CHANGES</Button></div>
+     <div className="mt-7">   <Button  variant="contained" onClick={handleSave}>SAVE CHANGES</Button></div>
       </div>
      
     </div>
   );
 }
-
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-const headCells = [
-  {
-    id: 'description',
-    numeric: false,
-    disablePadding: true,
-    label: 'Product Name',
-  },
-  
-  {
-    id: 'mrp',
-    numeric: true,
-    disablePadding: false,
-    label: 'MRP',
-  },
-  
-  {
-    id: 'price',
-    numeric: true,
-    disablePadding: false,
-    label: ' Price',
-  },
-  {
-    id: 'quantity',
-    numeric: true,
-    disablePadding: false,
-    label: 'Quantity',
-  },
-  {
-    id: 'value',
-    numeric: true,
-    disablePadding: false,
-    label: 'Value',
-  },
-];
-
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
-  const createSortHandler = (property) => (event) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              'aria-label': 'select all desserts',
-            }}
-          />
-        </TableCell>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            padding={headCell.disablePadding ? 'none' : 'normal'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(['asc', 'desc']).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-  return (
-    <Toolbar
-      sx={[
-        {
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-        },
-        numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-        },
-      ]}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: '1 1 100%' }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-        Stock Details
-        </Typography>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-         
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-      {numSelected > 0 ? (
-        <Tooltip title="edit">
-          <IconButton>
-           
-           < ModeEditOutlineIcon/>
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <div></div>
-      )}
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
-export  function EnhancedTable() {
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const {productData,setProductData,setDisplayedProducts,selectedCategoryItem,selectedItem}=useContext(ProductContext);
-
- //
-//  
-
-const getProducts = async () => {
-  if (selectedItem) {
-    try {
-      const response = await fetch(
-        `${API}/products/${selectedItem}`
-      );
-      const data = await response.json();
-      setProductData(data);
-      
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
-  }
-};
-
-useEffect(() => {
-  if (selectedItem) {
-    console.log(selectedItem)
-    getProducts();
-  }
-}, [selectedItem]);
-
-  //
-  function createData(id, description, mrp, price, quantity) {
-    const value = quantity * Number(price.replace(/,/g, ""));
-    return {
-      id,
-      description,
-      mrp,
-      price,
-      quantity,
-     value,
-    };
-  }
-  // console.log(productData.products)
-  const rows = productData.map(product => 
-    createData(product.id, product.description,  product.mrp, product.price,product.quantity,product.value)
-  );
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event, id) => {
-    const selectedIndex = selected.indexOf(id);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
-  };
-
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
-  const visibleRows = React.useMemo(
-    () =>
-      [...rows]
-        .sort(getComparator(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
-    [rows,order, orderBy, page, rowsPerPage],//i added rows inside this
-  );
-
-  return (
-    <Box sx={{ width: '100%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-            />
-            <TableBody>
-              {visibleRows.map((row, index) => {
-                const isItemSelected = selected.includes(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-
-                return (
-                  <TableRow
-                    hover
-                    onClick={(event) => handleClick(event, row.id)}
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.id}
-                    selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{
-                          'aria-labelledby': labelId,
-                        }}
-                      />
-                    </TableCell>
-                    <TableCell
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.description}
-                    </TableCell>
-
-                   
-                    <TableCell align="right">{row.mrp}</TableCell>
-                    <TableCell align="right">{row.price}</TableCell>
-                    <TableCell align="right">{row.quantity}</TableCell>
-                    <TableCell align="right">{row.value}</TableCell> 
-                  </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-      <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      />
-    </Box>
-  );
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
