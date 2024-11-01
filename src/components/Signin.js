@@ -1,6 +1,63 @@
 import React from 'react'
+import { useFormik } from "formik";
+import{API} from "../global";
+import * as yup from 'yup';
+import { useNavigate } from 'react-router-dom';
+
+
+const formValidationSchema = yup.object({
+  username: yup
+    .string()
+    .max(20, "needed maximum of 12 characters")
+    .required()
+    .matches(/^[A-Z0-9.%+-]+@[A-Z0-9.+]+\.[A-Z].{2,}$/i,"enter valid email"),
+  password: yup
+    .string()
+    .min(8, "too short")
+    .max(12, "too long")
+    .required()
+    .matches(/^(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[!@#$%^&*()]).{8,}$/,"enter a valid password"),
+});
+
 
 export  function Signin() {
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: formValidationSchema,
+    onSubmit: async (values) => {
+      console.log("Attempting to log in...", values);
+      try {
+          const response = await fetch(`${API}/users/login`, {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(values),
+          });
+
+          const data = await response.json();
+          if (response.ok) {
+              console.log('Login successful:', data);
+              // Store token in local storage or context
+              localStorage.setItem('token', data.token);
+              // Redirect to the dashboard or home page
+             navigate("/shop") // or use navigate('/dashboard') in v6
+          } else {
+              console.error('Login failed:', data.message);
+              // Handle error (e.g., display error message)
+          }
+      } catch (error) {
+          console.error('Error during login:', error);
+      }
+  },
+});
+
+// ...return form JSX
+
+  const navigate=useNavigate();
   return (
     <div>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -16,20 +73,25 @@ export  function Signin() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form onSubmit={formik.handleSubmit}  className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-                Email address
+              <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+                Username
               </label>
               <div className="mt-2">
                 <input
-                  id="email"
-                  name="email"
-                  type="email"
+                  id="username"
+                  name="username"
+                  type="username"
+                  value={formik.values.username}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
                   required
-                  autoComplete="email"
+                
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                                  {formik.touched.username && formik.errors.username? formik.errors.username: ""}
+
               </div>
             </div>
 
@@ -49,10 +111,15 @@ export  function Signin() {
                   id="password"
                   name="password"
                   type="password"
+                  value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   required
-                  autoComplete="current-password"
+
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
+                                  {formik.touched.password && formik.errors.password ? formik.errors.password : ""}
+
               </div>
             </div>
 
@@ -68,9 +135,9 @@ export  function Signin() {
 
           <p className="mt-10 text-center text-sm text-gray-500">
             Not a member?{' '}
-            <a href="#" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
-              Start a 14 day free trial
-            </a>
+            <div onClick={()=>navigate("/users/signup")} className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+              Sign up
+            </div>
           </p>
         </div>
       </div>

@@ -17,7 +17,10 @@ export function Sidebar() {
   const navigate = useNavigate();
   
 const{ handleShopClick }=useContext(ProductContext)
-
+const handleSignOut = () => {
+  localStorage.removeItem("token");
+  navigate("/users/signin"); // Redirect to sign-in page after sign-out
+};
   const sidebartoplinks = [
     {
       label: "DASHBOARD",
@@ -43,7 +46,7 @@ const{ handleShopClick }=useContext(ProductContext)
     {
       label: "SIGN IN",
       icon: <PiSignInBold />,
-      handleClick: () => navigate("signin"),
+      handleClick: () => navigate("users/signin"),
     },
   ];
 
@@ -56,7 +59,7 @@ const{ handleShopClick }=useContext(ProductContext)
     {
       label: "SIGN OUT",
       icon: <PiSignOutBold />,
-      handleClick: () => navigate("signout"),
+      handleClick: () => handleSignOut,
     },
   ];
 
