@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useFormik } from "formik";
 import{API} from "../global";
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
-
+import { jwtDecode } from "jwt-decode";
+import { ProductContext } from './ProductContext';
 
 const formValidationSchema = yup.object({
   username: yup
@@ -21,6 +22,7 @@ const formValidationSchema = yup.object({
 
 
 export  function Signin() {
+  const { setUser, setIsAuthenticated } =useContext(ProductContext)
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -43,6 +45,11 @@ export  function Signin() {
               console.log('Login successful:', data);
               // Store token in local storage or context
               localStorage.setItem('token', data.token);
+              console.log(data.token)
+              const decoded = jwtDecode(data.token);
+          setUser(decoded); // Set user in context
+          setIsAuthenticated(true); // Update authentication state
+
               // Redirect to the dashboard or home page
              navigate("/shop") // or use navigate('/dashboard') in v6
           } else {

@@ -5,7 +5,8 @@ export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
   const [displayedProducts, setDisplayedProducts] = useState([]);
-
+  const [user, setUser] = useState(null); // Store user object (including role)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const getDefaultCart = () => {
     let cart = {};
     console.log(cart);
@@ -465,7 +466,8 @@ export const ProductProvider = ({ children }) => {
         removefromcart,
         getTotalCartAmount,
         totalAmount,
-        selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems
+        selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems,
+        user,setUser,isAuthenticated,setIsAuthenticated
       }}>
       {children}
     </ProductContext.Provider>
