@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useState } from 'react'
 import { useFormik } from "formik";
 import{API} from "../global";
 import * as yup from 'yup';
@@ -22,44 +22,42 @@ const formValidationSchema = yup.object({
 
 
 export  function Signin() {
-  const { setUser, setIsAuthenticated } =useContext(ProductContext)
+  
+    const [err,setErr]=useState("")
+
+  const handleLogin=async(values)=>{
+    const payload={
+        username:values.username,
+        password:values.password
+    }
+console.log(payload)
+    const res=await fetch(`${API}/users/login`,{
+        method:"POST",
+        body:JSON.stringify(payload),
+        headers:{
+            "Content-type":"application/json"
+        }
+    })
+    const data=await res.json()
+    if(data.token){
+        setErr("")
+        localStorage.setItem("token",data.token)
+        navigate("/")
+    }else{
+        setErr(data.error)
+    }
+}
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
     },
     validationSchema: formValidationSchema,
-    onSubmit: async (values) => {
-      console.log("Attempting to log in...", values);
-      try {
-          const response = await fetch(`${API}/users/login`, {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(values),
-          });
 
-          const data = await response.json();
-          if (response.ok) {
-              console.log('Login successful:', data);
-              // Store token in local storage or context
-              localStorage.setItem('token', data.token);
-              console.log(data.token)
-              const decoded = jwtDecode(data.token);
-          setUser(decoded); // Set user in context
-          setIsAuthenticated(true); // Update authentication state
-
-              // Redirect to the dashboard or home page
-             navigate("/shop") // or use navigate('/dashboard') in v6
-          } else {
-              console.error('Login failed:', data.message);
-              // Handle error (e.g., display error message)
-          }
-      } catch (error) {
-          console.error('Error during login:', error);
-      }
-  },
+    //
+   
+  //
+    onSubmit: handleLogin
 });
 
 // ...return form JSX
@@ -137,6 +135,7 @@ export  function Signin() {
               >
                 Sign in
               </button>
+              {err?<h3>{err}</h3>:""}
             </div>
           </form>
 

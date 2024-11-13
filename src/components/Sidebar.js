@@ -19,7 +19,7 @@ export function Sidebar() {
 const{ handleShopClick }=useContext(ProductContext)
 const handleSignOut = () => {
   localStorage.removeItem("token");
-  navigate("/users/signin"); // Redirect to sign-in page after sign-out
+  navigate("users/signin"); // Redirect to sign-in page after sign-out
 };
   const sidebartoplinks = [
     {
@@ -59,7 +59,7 @@ const handleSignOut = () => {
     {
       label: "SIGN OUT",
       icon: <PiSignOutBold />,
-      handleClick: () => handleSignOut,
+      handleClick: handleSignOut,
     },
   ];
 

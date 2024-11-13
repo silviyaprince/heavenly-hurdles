@@ -22,47 +22,45 @@ const formValidationSchema = yup.object({
   
 
 export function Signup(){
+  const [err,setErr]=useState("")
 
+  const handleSignup=async(values)=>{
+    const payload={
+        username:values.username,
+        password:values.password
+    }
+console.log(payload)
+    const res=await fetch(`${API}/users/signup`,{
+        method:"POST",
+        body:JSON.stringify(payload),
+        headers:{
+            "Content-type":"application/json"
+        }
+    })
+    const data=await res.json()
+    if(res.status === 201){
+        setErr("")
+        // localStorage.setItem("token",data.token)
+        navigate("/")
+    }else{
+        setErr(data.error)
+    }
+}
+  
     const formik = useFormik({
         initialValues: {
           username: "",
           password: "",
         },
         validationSchema: formValidationSchema,
-        onSubmit: async (values) => {
-            try {
-                console.log("Attempting to create user...");
-              const response = await fetch(`${API}/users/signup`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify(values),
-              });
-              console.log("Response received:", response);
-             
-              if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-        
-              const data = await response.json();
-              console.log("account created:", data);
-              navigate("/users/signin");
-            } catch (error) {
-              console.error("Error creating user:", error.message);
-            }
-          }
+        onSubmit: handleSignup
         
       });
 
     const navigate=useNavigate()
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
+    
 
-    // const handleSignup = async (e) => {
-    //     e.preventDefault();  // Prevent form from refreshing the page
-    //     await createUserAccount(username, password);
-    // };
+    
    
     return(
         <div>
@@ -147,6 +145,7 @@ export function Signup(){
                 >
                   Sign up
                 </button>
+                {err?<div className="text-red-500">{err}</div>:""}
               </div>
             </form>
   
