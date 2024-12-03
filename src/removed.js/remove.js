@@ -563,3 +563,184 @@
 //   );
 // }
 // //
+
+
+        // <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+        //   <div className="sm:mx-auto sm:w-full sm:max-w-sm lg:w-full">
+        //     <img
+        //       alt="Your Company"
+        //       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+        //       className="mx-auto h-10 w-auto"
+        //     />
+        //     <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+        //       REGISTER HERE
+        //     </h2>
+        //   </div>
+  
+        //   <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        //     <form onSubmit={formik.handleSubmit}  className="space-y-12">
+
+        //     <div>
+        //         <label htmlFor="username" className="block text-sm font-medium leading-6 text-gray-900">
+        //         Username
+        //         </label>
+        //         <div className="mt-2">
+        //           <input
+        //             id="username"
+        //             name="username"
+        //             type="username" 
+        //             value={formik.values.username}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+                   
+        //             className="block w-full lg:w-3/4  rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        //           />
+        //           {formik.touched.username && formik.errors.username? formik.errors.username: ""}
+        //         </div>
+        //       </div>
+
+        //       <div>
+        //         <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+        //           Email address
+        //         </label>
+        //         <div className="mt-2">
+        //           <input
+        //             id="email"
+        //             name="email"
+        //             type="email"
+        //             value={formik.values.email}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+        //             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        //           />
+        //                             {formik.touched.email&& formik.errors.email? formik.errors.email: ""}
+
+        //         </div>
+        //       </div> 
+   
+        //       <div>
+        //         <div className="flex items-center justify-between">
+        //           <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+        //             Password
+        //           </label>
+                 
+        //         </div>
+        //         <div className="mt-2">
+        //           <input
+        //             id="password"
+        //             name="password"
+        //             type="password" 
+        //             value={formik.values.password}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+        //             autoComplete="current-password"
+        //             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+        //           />
+        //           {formik.touched.password && formik.errors.password ? formik.errors.password : ""}
+        //         </div>
+        //       </div>
+  
+
+        //       <div className="col-span-full">
+        //       <label htmlFor="street-address" className="block text-sm/6 font-medium text-gray-900">
+        //         Street address
+        //       </label>
+        //       <div className="mt-2">
+        //         <input
+        //           id="street"
+        //           name="street"
+        //           type="text"
+        //           value={formik.values.street}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+        //           autoComplete="street-address"
+        //           className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+        //         />
+        //                           {formik.touched.street && formik.errors.street? formik.errors.street: ""}
+
+        //       </div>
+        //     </div>
+
+        //     <div className="sm:col-span-2 sm:col-start-1">
+        //       <label htmlFor="city" className="block text-sm/6 font-medium text-gray-900">
+        //         City
+        //       </label>
+        //       <div className="mt-2">
+        //         <input
+        //           id="city"
+        //           name="city"
+        //           type="text"
+        //           value={formik.values.city}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+        //           autoComplete="address-level2"
+        //           className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+        //         />
+        //                                           {formik.touched.city && formik.errors.city? formik.errors.city: ""}
+
+        //       </div>
+        //     </div>
+
+        //     <div className="sm:col-span-2">
+        //       <label htmlFor="state" className="block text-sm/6 font-medium text-gray-900">
+        //         State / Province
+        //       </label>
+        //       <div className="mt-2">
+        //         <input
+        //           id="state"
+        //           name="state"
+        //           type="text"
+        //           value={formik.values.state}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+        //           autoComplete="address-level1"
+        //           className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+        //         />
+        //                                           {formik.touched.state && formik.errors.state? formik.errors.state: ""}
+
+        //       </div>
+        //     </div>
+
+        //     <div className="sm:col-span-2">
+        //       <label htmlFor="postalCode" className="block text-sm/6 font-medium text-gray-900">
+        //         ZIP / Postal code
+        //       </label>
+        //       <div className="mt-2">
+        //         <input
+        //           id="postalCode"
+        //           name="postalCode"
+        //           type="text"
+        //           value={formik.values.postalCode}
+        //             onChange={formik.handleChange}
+        //             onBlur={formik.handleBlur}
+        //             required
+        //           autoComplete="postalCode"
+        //           className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+        //         />
+        //                                           {formik.touched.postalCode && formik.errors.postalCode ? formik.errors.postalCode : ""}
+
+        //       </div>
+        //     </div>
+         
+
+
+        //       <div>
+        //         <button
+        //           type="submit"
+        //           className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        //         >
+        //           Sign up
+        //         </button>
+        //         {err?<div className="text-red-500">{err}</div>:""}
+        //       </div>
+        //     </form>
+  
+           
+        //   </div>
+        // </div>

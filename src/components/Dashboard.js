@@ -156,12 +156,12 @@ function Table(){
     <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50">
         <tr>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column 1</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column 2</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column 3</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column 4</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column 5</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Column 6</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SERIAL NO.</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CUSTOMER NAME</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ORDER NO.</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PRODUCT NAME</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QUANTITY</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">

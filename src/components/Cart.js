@@ -1,7 +1,10 @@
-import { useContext, useState } from 'react'
+
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
+import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { useContext, useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ProductContext } from './ProductContext'
+import { useNavigate } from 'react-router-dom'
 
 // const products = [
 //   {
@@ -29,9 +32,45 @@ import { ProductContext } from './ProductContext'
 // ]
 
 export  function Cart() {
+  const [amount,setAmount]=useState('')
+
+  const navigate=useNavigate()
+
   const [open, setOpen] = useState(true)
   const {displayedProducts,addtocart,removefromcart,totalAmount,cartItems,getTotalCartAmount}=useContext(ProductContext)
   console.log(totalAmount)
+  const handleSubmit=()=>{
+    setAmount(totalAmount)
+    if(amount===""){
+      alert("please add products to cart")
+    }else{
+      var options={
+        key:"rzp_test_TGTmyC13MVgXhU",
+        key_secret:"PLDVNtzeMCYKwuSjPDAyIxnG",
+        amount:amount *100,
+        currency:"INR",
+        name:"HEAVENLY HURDLES",
+        description:"shopping",
+        handler:function(response){
+          alert(response.razorpay_payment_id);
+        },
+        prefill:{
+          name:"Silviya",
+          email:"silviya.prince16@gmail.com",
+          contact:"9791676269"
+        },
+        notes:{
+          address:"Razorpay Corporate Office"
+        },
+        theme:{
+          color:"#3399cc"
+        }
+      }
+      var pay=new window.Razorpay(options)
+      pay.open()
+
+    }
+  }
   return (
     <Dialog open={open} onClose={setOpen} className="relative z-10">
       <DialogBackdrop
@@ -107,7 +146,15 @@ export  function Cart() {
                     </div>
                   </div>
                 </div>
+                <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
+                  <div className="flex justify-between text-base font-medium text-gray-900">
+                    <p>Shipping Address</p>
+                    <p>{data.street}</p>
+                    <p>{data.city},{data.state},{data.country}</p>
+                    <p>{data.postalCode}</p>
 
+                  </div>
+                <button onClick={()=>navigate("users/signup")}>CHANGE ADDRESS</button>
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
@@ -116,6 +163,7 @@ export  function Cart() {
                   <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
                   <div className="mt-6">
                     <a
+                    onClick={handleSubmit}
                       href="#"
                       className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                     >
@@ -137,6 +185,7 @@ export  function Cart() {
                   </div>
                 </div>
               </div>
+              </div>
             </DialogPanel>
           </div>
         </div>
@@ -144,3 +193,4 @@ export  function Cart() {
     </Dialog>
   )
 }
+
