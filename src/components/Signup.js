@@ -18,7 +18,7 @@ const formValidationSchema = yup.object({
   .required("name is required"),
     email: yup
       .string()
-      .max(20, "needed maximum of 12 characters")
+      .max(30, "too short")
       .required()
       .matches(/^[A-Z0-9.%+-]+@[A-Z0-9.+]+\.[A-Z].{2,}$/i,"enter valid email"),
     password: yup
@@ -75,8 +75,8 @@ console.log(payload)
     const data=await res.json()
     if(res.status === 201){
         setErr("")
-        // localStorage.setItem("token",data.token)
-        navigate("/")
+        
+        navigate("/users/signin")
     }else{
         setErr(data.error)
     }

@@ -6,7 +6,9 @@ export  function Empty() {
     console.log("Dropdown Open State:", isDropdownOpen);
 
     
-  return (
+  return(
+    <div>
+    <div className="text-primary2 mt-96 text-4xl font-display font-bold">CLICK ON SHOP TO START SHOPPING</div>
     <div className="flex-grow ">
     {isDropdownOpen && (
     <div>
@@ -121,6 +123,7 @@ export  function Empty() {
       </div>
     </div>
     )}
+    </div>
     </div>
   );
 }

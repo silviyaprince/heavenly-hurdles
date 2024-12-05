@@ -1,11 +1,11 @@
 
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
-import { useContext, useState } from 'react'
+import { useContext, useState ,useEffect} from 'react'
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import { ProductContext } from './ProductContext'
 import { useNavigate } from 'react-router-dom'
-
+import { API } from '../global'
 // const products = [
 //   {
 //     id: 1,
@@ -33,12 +33,39 @@ import { useNavigate } from 'react-router-dom'
 
 export  function Cart() {
   const [amount,setAmount]=useState('')
-
+const[userData,setUserData]=useState(null)
+const [error,setError]=useState('')
   const navigate=useNavigate()
 
   const [open, setOpen] = useState(true)
   const {displayedProducts,addtocart,removefromcart,totalAmount,cartItems,getTotalCartAmount}=useContext(ProductContext)
   console.log(totalAmount)
+
+  useEffect(()=>{
+    if(!localStorage.getItem("token")){
+      navigate("/login",{replace:true})
+    }
+    let token=localStorage.getItem("token")
+    const fetchUserData=async()=>{
+      const res=await fetch(`${API}/users/user`,{
+      method:"GET",
+      headers:{
+        "x-auth-token":token,
+      },
+        
+    })
+   const data=await res.json()
+   console.log(data)
+   if(!data.data){
+    setError(data.error)
+   }else{
+   setUserData(data.data)
+   }
+  }
+   fetchUserData()
+  },[])
+
+
   const handleSubmit=()=>{
     setAmount(totalAmount)
     if(amount===""){
@@ -149,9 +176,9 @@ export  function Cart() {
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Shipping Address</p>
-                    <p>{data.street}</p>
-                    <p>{data.city},{data.state},{data.country}</p>
-                    <p>{data.postalCode}</p>
+                    <p>data.street</p>
+                    {/* <p>{data.city,{data.state},{data.country}</p> */}
+                    <p>data.postalCode</p>
 
                   </div>
                 <button onClick={()=>navigate("users/signup")}>CHANGE ADDRESS</button>

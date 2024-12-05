@@ -17,6 +17,7 @@ import{Cart} from "./components/Cart";
 import { useContext } from "react";
 import { Signup } from "./components/Signup";
 import RoleBasedAccess from "./components/RoleBasedAccess"
+import { Shop } from "./components/Shop";
 
 const publicRoutes = ["/users/signin", "/users/signup"];
 
