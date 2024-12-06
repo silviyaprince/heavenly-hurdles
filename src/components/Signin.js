@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useFormik } from "formik";
 import { API } from "../global";
 import * as yup from "yup";
@@ -26,7 +26,7 @@ const formValidationSchema = yup.object({
 export function Signin() {
   const navigate = useNavigate();
   const [err, setErr] = useState("");
-
+const {user,setUser}=useContext(ProductContext)
   const handleLogin = async (values) => {
     const payload = {
       email: values.email,
@@ -44,8 +44,12 @@ export function Signin() {
     console.log("Form submitted");
     if (data.token) {
       setErr("");
-      localStorage.setItem("token", data.token);
-      if (data.role === "admin") {
+      setErr("");
+      localStorage.setItem("token", data.token); // Store token in localStorage
+      const decodedUser = jwtDecode(data.token); // Decode to check user role
+      setUser(decodedUser.role)
+      console.log(user)
+      if (decodedUser.role === "admin") {
         navigate("/"); // Navigate to admin dashboard
       } else {
         navigate("/shop"); // Navigate to shop

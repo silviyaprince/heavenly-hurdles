@@ -18,6 +18,9 @@ export const ProductProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState(getDefaultCart());
   console.log(cartItems);
 
+  
+
+
   const addtocart = (productId) => {
     setCartItems((prevCart) => {
       const currentAmount = prevCart[productId] || 0; // Handle undefined cases

@@ -740,7 +740,22 @@
         //         {err?<div className="text-red-500">{err}</div>:""}
         //       </div>
         //     </form>
-  
+  -------
+
+  // useEffect(() => {
+  //     const token = localStorage.getItem("token");
+  //     const user = token ? jwtDecode (token) : null;
+  //     if (!user) {
+  //       // If no user, allow access to public routes
+  //       return;
+  //     }
+  //     if (user?.role === "admin") {
+  //         navigate("/"); // Redirect to admin dashboard
+  //     } else if (user?.role === "customer") {
+  //         navigate("users/signin"); // Redirect to customer shop
+  //     }
+  // }, [navigate]);
+  --------------
            
         //   </div>
         // </div>

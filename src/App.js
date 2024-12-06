@@ -2,6 +2,7 @@ import { Route, Routes,useNavigate } from "react-router-dom";
 import "./App.css";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import { Addstock } from "./components/Addstock";
 import { Stock } from "./components/Stock";
@@ -16,54 +17,56 @@ import {Empty} from "./components/Empty";
 import{Cart} from "./components/Cart";
 import { useContext } from "react";
 import { Signup } from "./components/Signup";
-import RoleBasedAccess from "./components/RoleBasedAccess"
 import { Shop } from "./components/Shop";
 
-const publicRoutes = ["/users/signin", "/users/signup"];
 
 function App() {
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //     const token = localStorage.getItem("token");
-  //     const user = token ? jwtDecode (token) : null;
-  //     if (!user) {
-  //       // If no user, allow access to public routes
-  //       return;
-  //     }
-  //     if (user?.role === "admin") {
-  //         navigate("/"); // Redirect to admin dashboard
-  //     } else if (user?.role === "customer") {
-  //         navigate("users/signin"); // Redirect to customer shop
-  //     }
-  // }, [navigate]);
   return (
     <ProductProvider>
     <div>
       <Routes>
-     
-       
+      
         <Route path="/" element={<Layout />}>
-          <Route index element={<Dashboard />} />{" "}
+          <Route index element={<ProtectedRoute roles={["admin"]}>
+                  <Dashboard />
+                </ProtectedRoute>} />{" "}
           {/* This ensures Dashboard shows for the root path */}
           <Route path="users/signin" element={<Signin />} />
           <Route path="users/signup" element={<Signup />} />
-          <Route path="addstock" element={<Addstock />} />
+          <Route path="addstock" element={<ProtectedRoute roles={["admin"]}>
+                  <Addstock />
+                </ProtectedRoute>} />
           <Route path="contactus" element={<Contactus />} />
          
-          <Route path="stock" element={
-                        <RoleBasedAccess allowedRoles={['admin']}>
-                            <Stock />
-                        </RoleBasedAccess>
+          <Route path="stock" element={<ProtectedRoute roles={["admin"]}>
+                  <Stock />
+                </ProtectedRoute>
+                        
                     }  />
       
          
-          <Route path="shop" element={<Empty />} />
-          <Route path="products/:selectedCategoryItem" element={<Productlist />} />
-          <Route path="cart" element={<Cart />} />
-        </Route>
+      <Route path="shop" element={
+      <ProtectedRoute roles={["admin", "customer"]}>
+        <Empty />
+      </ProtectedRoute>
+    } />
+
+    <Route path="products/:selectedCategoryItem" element={
+      <ProtectedRoute roles={["admin", "customer"]}>
+        <Productlist />
+      </ProtectedRoute>
+    } />
+<Route path="cart" element={
+      <ProtectedRoute roles={["admin", "customer"]}>
+        <Cart />
+      </ProtectedRoute>
+    } />        </Route>
         <Route path="*" element={<Pagenotfound />} />
       </Routes>
+    
+       
     </div>
     </ProductProvider>
   );

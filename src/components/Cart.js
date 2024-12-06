@@ -33,7 +33,7 @@ import { API } from '../global'
 
 export  function Cart() {
   const [amount,setAmount]=useState('')
-const[userData,setUserData]=useState(null)
+const[userData,setUserData]=useState({})
 const [error,setError]=useState('')
   const navigate=useNavigate()
 
@@ -41,31 +41,35 @@ const [error,setError]=useState('')
   const {displayedProducts,addtocart,removefromcart,totalAmount,cartItems,getTotalCartAmount}=useContext(ProductContext)
   console.log(totalAmount)
 
-  useEffect(()=>{
-    if(!localStorage.getItem("token")){
-      navigate("/login",{replace:true})
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/login', { replace: true });
+    } else {
+      const fetchUserData = async () => {
+        try {
+          const res = await fetch(`${API}/users/user`, {
+            method: 'GET',
+            headers: {
+              'x-auth-token': token,
+            },
+          });
+          const data = await res.json();
+          
+          if (data.error) {
+            setError(data.error);
+          } else {
+            setUserData(data.data); // Set the user data in state
+          }
+        } catch (err) {
+          setError('Failed to fetch user data');
+        }
+      };
+      fetchUserData();
     }
-    let token=localStorage.getItem("token")
-    const fetchUserData=async()=>{
-      const res=await fetch(`${API}/users/user`,{
-      method:"GET",
-      headers:{
-        "x-auth-token":token,
-      },
-        
-    })
-   const data=await res.json()
-   console.log(data)
-   if(!data.data){
-    setError(data.error)
-   }else{
-   setUserData(data.data)
-   }
-  }
-   fetchUserData()
-  },[])
+  }, [navigate]);
 
-
+console.log(userData)
   const handleSubmit=()=>{
     setAmount(totalAmount)
     if(amount===""){
@@ -176,7 +180,7 @@ const [error,setError]=useState('')
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Shipping Address</p>
-                    <p>data.street</p>
+                    <p>{userData.street}</p>
                     {/* <p>{data.city,{data.state},{data.country}</p> */}
                     <p>data.postalCode</p>
 
