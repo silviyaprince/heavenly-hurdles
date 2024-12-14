@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 export function Productlist() {
   const { selectedCategoryItem } = useParams();
-  const { setDisplayedProducts, displayedProducts,addtocart,cartItems} =
+  const { setDisplayedProducts, displayedProducts,addtocart,cartItems,searchTerm} =
     useContext(ProductContext);
     const getDefaultCart=()=>{
       let cart={};
@@ -16,6 +16,7 @@ export function Productlist() {
       }
       return cart;
   };
+  console.log(searchTerm)
   const getProducts = () => {
     fetch(`${API}/products/${selectedCategoryItem}`, {
       method: "GET",
@@ -35,7 +36,14 @@ export function Productlist() {
         </h2>
 
         <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {displayedProducts.map((product) => {
+          {displayedProducts.filter((product)=>{
+            if(searchTerm==""){
+              return product
+            }else if(product.name.toLowerCase().includes(searchTerm.toLowerCase())){
+              return product
+            }
+          })
+          .map((product) => {
               const cartItemAmount=cartItems[product.id]
            return(
               <div key={product.id} className="group relative">

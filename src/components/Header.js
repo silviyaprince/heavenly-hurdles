@@ -1,4 +1,4 @@
-import {React} from "react";
+import {React,useEffect} from "react";
 import { MdSpaceDashboard } from "react-icons/md";
 import { HiShoppingBag } from "react-icons/hi2";
 import { PiSignInBold } from "react-icons/pi";
@@ -22,10 +22,9 @@ import { ProductContext } from "./ProductContext";
 
 export function Header() {
   const [isFlyoutmenuopen,setisFlyoutmenuopen]=useState(false)
-  const{handleShopClick}=useContext(ProductContext)
+  const{handleShopClick,setSearchTerm}=useContext(ProductContext)
   const navigate=useNavigate()
 
- 
 
   // const handleShopClick = () => {
   //   setDropdownOpen(!isDropdownOpen);
@@ -81,7 +80,7 @@ export function Header() {
 
     </Popover>
           
-        <div className="flex flex-row justify-center">
+        <div className="flex flex-row justify-center ">
           <div className="text-2xl xl:text-4xl xl:mr-48 lg:text-4xl lg:mr-12 md:mr-10 italic text-white font-display font-extrabold mt-7">
             Heavenly Hurdles
           </div>
@@ -93,26 +92,24 @@ export function Header() {
         </div>
 
         <IoNotifications className="hidden md:block text-white text-3xl mt-7" />
-        <BsCartFill className="text-white text-3xl mt-7" />
         <div className="hidden lg:block relative mt-7 ">
           <HiSearch className="absolute text-2xl  mt-1 " />
           <input
             type="text"
             placeholder="Search..."
+            onChange={(e)=>setSearchTerm(e.target.value)}
+
             className="  text-2xl px-3 pl-12 xl:w-80 focus:outline-none active:outline-none h-10 w-20 xl:w-[34rem] lg:w-40 border  border-gray-500 md:border-gray-500 rounded-sm"
           />
         </div>
-        <button
-          // onClick={()=>navigate("/dashboard")}
-          className=" hidden md:block  lg:block mt-7   h-10 text-primary3 bg-white px-3 py-2 text-white font-display font-semibold rounded hover:cursor-pointer">
-          MODE
-        </button>
+        
       </div>
       <div className="lg:hidden relative mt-4 mx-auto">
         <HiSearch className="absolute text-2xl  mt-1 " />
         <input
           type="text"
           placeholder="Search..."
+          onChange={(e)=>setSearchTerm(e.target.value)}
           className="  text-2xl px-3 pl-12 focus:outline-none active:outline-none h-10 w-[28rem] md:w-[34rem] border  border-gray-500 md:border-gray-500 rounded-sm"
         />
       </div>

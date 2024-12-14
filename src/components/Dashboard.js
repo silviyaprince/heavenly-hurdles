@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect,useState } from "react";
 import { BsPeopleFill } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
 import { AiFillProduct } from "react-icons/ai";
@@ -14,7 +15,13 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { API } from "../global";
+
+
+
 export function Dashboard() {
+  const [orders, setOrders] = useState([]);
+
   const boxdata = [
     {
       label: "Total Vendors",
@@ -41,7 +48,31 @@ export function Dashboard() {
       icon: <SiSalesforce />,
     },
   ];
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const token = localStorage.getItem('token');
 
+      try {
+        const res = await fetch(`${API}/users/ordersdata`,{
+           method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+           
+              'x-auth-token': token,
+           
+          },
+          
+        });
+        const data = await res.json();
+        console.log(data)
+        setOrders(data.orders || []); // Assuming the API returns all orders
+      } catch (err) {
+        console.error("Failed to fetch orders", err);
+      }
+    };
+
+    fetchOrders();
+  }, []);
   return (
     <div className="flex  p-1 flex-col  gap-3 flex-wrap">
       <div className="flex  justify-center bg-white  rounded shadow-md flex-initial  ml-0.5 p-7 lg:ml-12 lg:mx-auto xl:mx-auto 2xl:mx-auto flex-wrap gap-6">
@@ -55,7 +86,7 @@ export function Dashboard() {
         <BarChart />
       </div>
       <div className="rounded shadow-md" id="tablescroll">
-        <Table/>
+        <Table orders={orders}/>
       </div>
     </div>
   );
@@ -150,7 +181,7 @@ const BarChart = () => {
 };
 
 
-function Table(){
+function Table({orders}){
   return(
     <div className="min-w-full ">
     <table className="min-w-full divide-y divide-gray-200">
@@ -159,23 +190,31 @@ function Table(){
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SERIAL NO.</th>
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">CUSTOMER NAME</th>
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ORDER NO.</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PRODUCT NAME</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">QUANTITY</th>
-          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PRODUCT ID-QUANTITY</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TOTAL </th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DATE</th>
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
         {/* Sample Rows */}
-        {Array.from({ length: 10 }).map((_, index) => (
-          <tr key={index}>
-            <td className="px-4 py-2 whitespace-nowrap">Row {index + 1} - Col 1</td>
-            <td className="px-4 py-2 whitespace-nowrap">Row {index + 1} - Col 2</td>
-            <td className="px-4 py-2 whitespace-nowrap">Row {index + 1} - Col 3</td>
-            <td className="px-4 py-2 whitespace-nowrap">Row {index + 1} - Col 4</td>
-            <td className="px-4 py-2 whitespace-nowrap">Row {index + 1} - Col 5</td>
-            <td className="px-4 py-2 whitespace-nowrap">Row {index + 1} - Col 6</td>
+        {orders?.length > 0 ? (
+  orders.map((order,index) => (
+          <tr key={order.orderId}>
+                        <td className="px-4 py-2 whitespace-nowrap">{index+1}</td>
+
+            <td className="px-4 py-2 whitespace-nowrap">{order.username}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{order.orderId}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{order.products && Array.isArray(order.products) && order.products.map((product, index) => (
+  <div key={index}>
+    {product.productId} -{product.quantity}Nos.
+  </div>))}
+  </td>
+            <td className="px-4 py-2 whitespace-nowrap">₹{order.totalAmount}</td>
+            <td className="px-4 py-2 whitespace-nowrap">{new Date(order.orderDate).toLocaleString()}</td>
           </tr>
-        ))}
+        ))):(
+          <p>No orders found</p>
+        )}
       </tbody>
     </table>
   </div>

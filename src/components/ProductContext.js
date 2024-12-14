@@ -4,6 +4,8 @@ import { API } from "../global";
 export const ProductContext = createContext();
 
 export const ProductProvider = ({ children }) => {
+    const[searchTerm,setSearchTerm]=useState("")
+  
   const [displayedProducts, setDisplayedProducts] = useState([]);
   const [user, setUser] = useState(null); // Store user object (including role)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -470,7 +472,7 @@ export const ProductProvider = ({ children }) => {
         getTotalCartAmount,
         totalAmount,
         selectedCategory,handleCategoryChange,categories,selectedSubcategory,handleSubcategoryChange,getSubcategories,selectedItem,handleItemChange,getItems,
-        user,setUser,isAuthenticated,setIsAuthenticated
+        user,setUser,isAuthenticated,setIsAuthenticated,searchTerm,setSearchTerm
       }}>
       {children}
     </ProductContext.Provider>

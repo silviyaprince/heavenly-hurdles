@@ -49,19 +49,7 @@ const navigate = useNavigate();
     };
   }, [isDropdownOpen]);
 
-  const [mode, setMode] = useState("light");
-
-  useEffect(() => {
-    if (mode == "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [mode]);
-
-  const handleModeSwitch = () => {
-    setMode(mode === "dark" ? "light" : "dark");
-  };
+ 
 
   return (
     <div className="flex h-screen dark:bg-black dark:text-white bg-green-100">

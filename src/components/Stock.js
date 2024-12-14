@@ -37,9 +37,7 @@ const columns = [
   { id: "value", label: "Value", minWidth: 160 },
 ];
 
-const rows = [
-  // Add more rows as needed with unique `id` values
-];
+
 
 export function Stock() {
   const {
@@ -200,50 +198,6 @@ const updatedProducts = productData.map((product) =>
     }));
   };
 
-  const handleSave = async () => {
-    // Collect selected IDs from checkboxes
-    const selectedIds = productData.filter((product) => product.isSelected).map((product) => product.id);
-    console.log('Selected Products:', productData.filter((product) => product.isSelected));
-
-    // Define update fields based on selected products
-    const updateFields = selectedIds.reduce((fields,id) => {
-      const selectedProduct = productData.find(product => product.id === id);
-      if (selectedProduct) {
-        fields[id] = {
-          ...(selectedProduct.price && { price: selectedProduct.price }),
-          ...(selectedProduct.description && { description: selectedProduct.description }),
-        };
-      }
-      return fields;
-    }, {});
-  
-    // Define the payload structure
-    const payload = {
-      ids: selectedIds,
-      updateFields,
-    };
-    console.log('Payload:', JSON.stringify(payload));
-    try {
-      const response = await fetch(`${API}/products/${selectedItem}/bulkupdate`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-  
-      const result = await response.json();
-  
-      if (response.ok) {
-        // Successful response handling
-        console.log(`Bulk update successful: ${result.modifiedCount} documents modified.`);
-      } else {
-        console.error(`Error: ${result.error}`);
-      }
-    } catch (error) {
-      console.error('An error occurred during the update:', error);
-    }
-  };
   
   return (
     <div className="flex flex-col ">
@@ -422,7 +376,7 @@ const updatedProducts = productData.map((product) =>
 
         <div className="mt-7">
           {" "}
-          <Button variant="contained" onClick={handleSave}>
+          <Button variant="contained" onClick={""}>
             SAVE CHANGES
           </Button>
         </div>

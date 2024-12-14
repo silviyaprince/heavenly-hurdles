@@ -40,8 +40,10 @@ const [error,setError]=useState('')
   const [open, setOpen] = useState(true)
   const {displayedProducts,addtocart,removefromcart,totalAmount,cartItems,getTotalCartAmount}=useContext(ProductContext)
   console.log(totalAmount)
+console.log(typeof(cartItems))
+  
 
-  useEffect(() => {
+useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
       navigate('/login', { replace: true });
@@ -82,13 +84,45 @@ console.log(userData)
         currency:"INR",
         name:"HEAVENLY HURDLES",
         description:"shopping",
-        handler:function(response){
+        handler:async function(response){
           alert(response.razorpay_payment_id);
-        },
+        
+     const    payload = {
+          userId: userData._id, // Ensure you have the user ID from the context or state
+          products: Object.entries(cartItems).map(([productId, quantity]) => ({
+            productId, // Key from the object
+            quantity, 
+            
+          })),
+          totalAmount,
+        }
+
+        const token = localStorage.getItem('token');
+
+
+        const res = await fetch(`${API}/users/orders`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+           
+              'x-auth-token': token,
+           
+          },
+          body: JSON.stringify(payload),
+        });
+
+        const data = await res.json();
+        if (data.error) {
+          alert(`Failed to place order: ${data.error}`);
+        } else {
+          alert(`Order placed successfully! Order ID: ${data.order.orderId}`);
+          navigate("/dashboard"); // Navigate to dashboard to see the table
+        }
+      },
         prefill:{
-          name:"Silviya",
-          email:"silviya.prince16@gmail.com",
-          contact:"9791676269"
+          name:userData.username,
+          email:userData.email,
+          contact:userData.phonenumber,
         },
         notes:{
           address:"Razorpay Corporate Office"
@@ -179,10 +213,12 @@ console.log(userData)
                 </div>
                 <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                   <div className="flex justify-between text-base font-medium text-gray-900">
-                    <p>Shipping Address</p>
-                    <p>{userData.street}</p>
-                    {/* <p>{data.city,{data.state},{data.country}</p> */}
-                    <p>data.postalCode</p>
+                    <p><strong>Shipping Address</strong></p>
+                    <div><p>{userData.street}</p>
+                     <p>{userData.city},{userData.state}</p>
+                     <p>{userData.country}</p> 
+                    <p>{userData.postalCode}</p></div>
+                    
 
                   </div>
                 <button onClick={()=>navigate("users/signup")}>CHANGE ADDRESS</button>

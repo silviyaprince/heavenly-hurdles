@@ -46,6 +46,11 @@ const formValidationSchema = yup.object({
   country: yup
   .string()
   .required("select the country"),
+  phonenumber: yup
+  .string()
+  .required()
+  .matches(/^[0-9]{10}$/, "enter a valid phone number"),
+
   });
   
 
@@ -62,6 +67,7 @@ export function Signup(){
         city:values.city,
         state:values.state,
         postalCode:values.postalCode,
+        phonenumber:values.phonenumber,
     }
     console.log("handleSignup invoked") 
 console.log(payload)
@@ -92,6 +98,7 @@ console.log(payload)
           city: "",
     postalCode: "",
     state: "",
+    phonenumber:"",
         },
         validationSchema: formValidationSchema,
         onSubmit: handleSignup
@@ -277,6 +284,26 @@ console.log(payload)
               className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
             />
                               {formik.touched.postalCode && formik.errors.postalCode? formik.errors.postalCode: ""}
+
+          </div>
+        </div>
+
+        <div className="sm:col-span-2">
+          <label htmlFor="phonenumber" className="block text-sm/6 font-medium text-gray-900">
+            Phone Number
+          </label>
+          <div className="mt-2">
+            <input
+              id="phonenumber"
+              name="phonenumber"
+              type="tel"
+              value={formik.values.phonenumber}
+              onChange={formik.handleChange}
+             onBlur={formik.handleBlur}
+              required
+              className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+            />
+                              {formik.touched.phonenumber && formik.errors.phonenumber? formik.errors.phonenumber: ""}
 
           </div>
         </div>
