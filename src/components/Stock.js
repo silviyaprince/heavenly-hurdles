@@ -198,7 +198,8 @@ const updatedProducts = productData.map((product) =>
     }));
   };
 
-  
+  console.log(productData)
+  console.log(rows)
   return (
     <div className="flex flex-col ">
       <div className="sm:col-span-3">

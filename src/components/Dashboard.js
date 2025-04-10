@@ -4,6 +4,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { MdCategory } from "react-icons/md";
 import { AiFillProduct } from "react-icons/ai";
 import { SiSalesforce } from "react-icons/si";
+import { SiStockx } from "react-icons/si";
 import { Pie } from "react-chartjs-2";
 import { Bar } from "react-chartjs-2";
 import {
@@ -24,10 +25,10 @@ export function Dashboard() {
 
   const boxdata = [
     {
-      label: "Total Vendors",
-      totalnumber: 44,
+      label: "Out Of Stock",
+      totalnumber: 4,
       bgcolor: "pink-300",
-      icon: <BsPeopleFill />,
+      icon: <SiStockx />,
     },
     {
       label: "Total Categories",
@@ -86,7 +87,7 @@ export function Dashboard() {
         <BarChart />
       </div>
       <div className="rounded shadow-md" id="tablescroll">
-        <Table orders={orders}/>
+        <Table orders={orders} setOrders={setOrders}/>
       </div>
     </div>
   );
@@ -180,8 +181,43 @@ const BarChart = () => {
   );
 };
 
-
-function Table({orders}){
+function Table({orders,setOrders}){
+  // const handleMarkAsDelivered = (orderId) => {
+  //   const updatedOrders = orders
+  //     .map((order) =>
+  //       order.orderId === orderId
+  //         ? { ...order, status: "DELIVERED" }
+  //         : order
+  //     )
+  //     .filter((order) => order.status !== "DELIVERED"); // Remove delivered orders
+  
+  //   setOrders(updatedOrders); // Update parent state
+  // };
+  const handleDeleteOrder = async (orderId) => {
+    const token = localStorage.getItem('token');
+  
+    try {
+      const res = await fetch(`${API}/users/orders/${orderId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token
+        }
+      });
+  
+      if (res.ok) {
+        // Remove from local state
+        setOrders(prev => prev.filter(order => order.orderId !== orderId));
+        alert("Order marked as delivered and removed successfully.");
+      } else {
+        alert("Failed to delete order from server.");
+      }
+    } catch (error) {
+      console.error("Error deleting order:", error);
+      alert("An error occurred.");
+    }
+  };
+  
   return(
     <div className="min-w-full ">
     <table className="min-w-full divide-y divide-gray-200">
@@ -193,6 +229,8 @@ function Table({orders}){
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">PRODUCT ID-QUANTITY</th>
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">TOTAL </th>
           <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">DATE</th>
+          <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">STATUS</th>
+
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200">
@@ -211,6 +249,14 @@ function Table({orders}){
   </td>
             <td className="px-4 py-2 whitespace-nowrap">₹{order.totalAmount}</td>
             <td className="px-4 py-2 whitespace-nowrap">{new Date(order.orderDate).toLocaleString()}</td>
+            <td className="px-4 py-2 whitespace-nowrap">
+                  <button
+                    className="bg-green-500 text-white px-2 py-1 text-sm rounded"
+                    onClick={() =>  handleDeleteOrder(order.orderId)}
+                  >
+                    Mark as Delivered
+                  </button>
+                </td>
           </tr>
         ))):(
           <p>No orders found</p>
