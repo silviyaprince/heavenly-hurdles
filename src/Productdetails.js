@@ -12,7 +12,7 @@ const {category}=useParams();
       fetch(`${API}/products/${category}/${productid}`,{
         method:"GET"
       })
-      .then((res)=>res.json)
+      .then((res)=>res.json())
       .then((data)=>setProduct(data))
     })
     const navigate=useNavigate();

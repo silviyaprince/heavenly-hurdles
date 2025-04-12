@@ -27,7 +27,8 @@ export function Productlist() {
   useEffect(() => getProducts(), [selectedCategoryItem]);
 const navigate=useNavigate()
   const handleProductClick = (id) => {
-    navigate(`/product/${selectedCategoryItem}/${id}`);
+    console.log(selectedCategoryItem, id)
+    navigate(`/products/${selectedCategoryItem}/${id}`);
   };
 
   return (
