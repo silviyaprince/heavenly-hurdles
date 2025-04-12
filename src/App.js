@@ -3,7 +3,7 @@ import "./App.css";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import ProtectedRoute from "./components/ProtectedRoute";
-
+import { Productdetails } from "./Productdetails";
 import { Addstock } from "./components/Addstock";
 import { Stock } from "./components/Stock";
 import { Contactus } from "./components/Contactus";
@@ -58,6 +58,11 @@ function App() {
         <Productlist />
       </ProtectedRoute>
     } />
+    <Route path="/products/:selectedCategoryItem/:id" element={
+      <ProtectedRoute roles={["admin", "customer"]}>
+        <Productdetails />
+      </ProtectedRoute>} />
+
 <Route path="cart" element={
       <ProtectedRoute roles={["admin", "customer"]}>
         <Cart />

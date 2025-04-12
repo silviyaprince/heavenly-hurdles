@@ -1,17 +1,20 @@
 import { useState,useEffect } from "react";
 import { useNavigate,useParams } from "react-router-dom";
+import { FaBackwardStep } from "react-icons/fa6";
+import Button from '@mui/material/Button';
+
 import {API} from "./global";
 export function Productdetails() {
-// const {category}=useParams();
+const {category}=useParams();
     const { productid } = useParams();
     const [product,setProduct]=useState({})
-    // useEffect(()=>{
-    //   fetch(`${API}/products/${category}/${productid}`,{
-    //     method:"GET"
-    //   })
-    //   .then((res)=>res.json)
-    //   .then((data)=>setProduct(data))
-    // })
+    useEffect(()=>{
+      fetch(`${API}/products/${category}/${productid}`,{
+        method:"GET"
+      })
+      .then((res)=>res.json)
+      .then((data)=>setProduct(data))
+    })
     const navigate=useNavigate();
     return (
     <div className="detail">
@@ -33,7 +36,7 @@ export function Productdetails() {
       </div>
     </div>
     <p className="product-description">{product.description}</p>
-    <Button startIcon={<ArrowBackIosNewIcon/>}variant="contained" onClick={()=>navigate(-1)}>BACK</Button>
+    <Button startIcon={<FaBackwardStep />}variant="contained" onClick={()=>navigate(-1)}>BACK</Button>
   </div>
   
   

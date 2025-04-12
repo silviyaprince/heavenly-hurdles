@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { ProductContext } from "./components/ProductContext";
 import { API } from "./global";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 export function Productlist() {
   const { selectedCategoryItem } = useParams();
@@ -25,8 +25,10 @@ export function Productlist() {
       .then((data) => setDisplayedProducts(data));
   };
   useEffect(() => getProducts(), [selectedCategoryItem]);
-
-
+const navigate=useNavigate()
+  const handleProductClick = (id) => {
+    navigate(`/product/${selectedCategoryItem}/${id}`);
+  };
 
   return (
     <div className="bg-zinc-300">
@@ -51,6 +53,7 @@ export function Productlist() {
                   <img
                     alt={product.imageAlt}
                     src={product.pic}
+                    onClick={() => handleProductClick(product.id)}
                     className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                   />
                 </div>
