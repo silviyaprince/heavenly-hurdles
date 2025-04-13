@@ -270,7 +270,7 @@ export const ProductProvider = ({ children }) => {
     if (selectedCategoryItem) {
       try {
         const response = await fetch(
-          `${API}/products?category=${selectedCategoryItem}`
+          `${API}/products/${selectedCategoryItem}`
         );
         const data = await response.json();
         setProductData(data);

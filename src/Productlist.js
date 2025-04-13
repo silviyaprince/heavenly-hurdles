@@ -17,14 +17,14 @@ export function Productlist() {
       return cart;
   };
   console.log(searchTerm)
-  const getProducts = () => {
-    fetch(`${API}/products/${selectedCategoryItem}`, {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => setDisplayedProducts(data));
-  };
-  useEffect(() => getProducts(), [selectedCategoryItem]);
+  // const getProducts = () => {
+  //   fetch(`${API}/products/${selectedCategoryItem}`, {
+  //     method: "GET",
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => setDisplayedProducts(data));
+  // };
+  // useEffect(() => getProducts(), [selectedCategoryItem]);
 const navigate=useNavigate()
   const handleProductClick = (id) => {
     console.log(selectedCategoryItem, id)

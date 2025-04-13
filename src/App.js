@@ -58,7 +58,7 @@ function App() {
         <Productlist />
       </ProtectedRoute>
     } />
-    <Route path="/products/:selectedCategoryItem/:id" element={
+    <Route path="products/:category/:id" element={
       <ProtectedRoute roles={["admin", "customer"]}>
         <Productdetails />
       </ProtectedRoute>} />
