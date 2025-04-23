@@ -74,7 +74,7 @@ export function Addstock() {
 
   const createProduct = async (newProduct) => {
     try {
-      const response = await fetch(`${API}/products/${selectedItem}`, {
+      const response = await fetch(`${API}/products/${encodeURIComponent(selectedItem)}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,6 +88,8 @@ export function Addstock() {
 
       const data = await response.json();
       console.log("Product created:", data);
+      formik.resetForm();
+
     } catch (error) {
       console.error("Error creating product:", error.message);
     }

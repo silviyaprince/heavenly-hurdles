@@ -121,7 +121,7 @@ export const ProductProvider = ({ children }) => {
     },
     {
       title: "Team Sports",
-      items: ["Football", "Basketball", "Cricket", "Volleyball", "Hockey"],
+      items: ["Football", "Basketball",  "Hockey"],
     },
     { title: "Running & Walking", items: ["Running", "Walking"] },
     { title: "Cycling", items: ["Cycling", "Cycle Servicing"] },
