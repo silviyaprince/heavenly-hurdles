@@ -54,10 +54,11 @@ export function Stock() {
     setProductData,
   } = useContext(ProductContext);
 
-  const rows = useMemo(
-    () => productData.map((product) => ({ ...product })),
-    [productData]
-  );
+  const rows = useMemo(() => productData.map((product) => ({
+  ...product,
+  id: product._id // Assign _id to id for frontend consistency
+})), [productData]);
+
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -135,14 +136,39 @@ const updatedProducts = productData.map((product) =>
     }
   }, [selectedItem]);
 
-  const handleEdit = () => {
-    const newEditingData = selected.reduce((acc, id) => {
-      const product = rows.find((row) => row.id === id);
-      acc[id] = { ...product }; // Initialize with current row data
-      return acc;
-    }, {});
-    setEditingData(newEditingData);
-  };
+//   const handleEdit = () => {
+//   if (selected.length === 1) {
+//     console.log(selected[0])
+//     const id = selected[0];
+// const rowToEdit = rows.find((row) => row.id === id); // ✅ Correct
+//     console.log(rowToEdit)
+//     setEditingRowId(id);
+//     setEditingRowData({ ...rowToEdit });
+//   } else {
+//     alert("Please select exactly one row to edit.");
+//   }
+// };
+
+
+const handleEdit = () => {
+  if (selected.length === 1) {
+    const _id = selected[0];
+    const rowToEdit = rows.find((row) => row._id ===_id);
+    setEditingRowId(_id);
+    // Copy all properties except isSelected to avoid conflicts
+    const { isSelected, ...rowData } = rowToEdit;
+    setEditingRowData(rowData);
+    // Ensure the row stays selected
+    setSelected([_id]);
+    // Update productData to reflect selection
+    setProductData(productData.map(product => 
+      product._id === _id ? { ...product, isSelected: true } : product
+    ));
+  } else {
+    alert("Please select exactly one row to edit.");
+  }
+};
+
   const handleDelete = async () => {
     if (selected.length === 0) return; // Exit if no rows are selected
 
@@ -180,7 +206,77 @@ const updatedProducts = productData.map((product) =>
     }
   };
 
-  const [editingData, setEditingData] = useState({}); // Object to hold editing data for selected products
+//  const handleSave = async () => {
+//   if (!editingRowId) return;
+//   console.log(editingRowId)
+// const {
+//     id,
+//     isSelected
+    
+//   } = editingRowData;
+
+//   try {
+//     const response = await fetch(`${API}/products/${encodeURIComponent(selectedItem)}/${editingRowId}`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(editingRowData),
+//     });
+
+//     if (response.ok) {
+//       const updated = productData.map((product) =>
+//         product.id === editingRowId ? { ...product, ...editingRowData } : product
+//       );
+//       setProductData(updated);
+//       setEditingRowId(null);
+//       setEditingRowData({});
+//       setSelected([]); // Clear selection
+//     } else {
+//       console.error("Failed to update");
+//     }
+//   } catch (error) {
+//     console.error("Error updating:", error);
+//   }
+// };
+useEffect(() => {
+  console.log('Current selection:', selected);
+  console.log('Product data:', productData.map(p => ({id: p.id, isSelected: p.isSelected})));
+}, [selected, productData]);
+const handleSave = async () => {
+  if (!editingRowId) return;
+
+  try {
+    // Destructure to exclude `id` and `_id`, and also remove `isSelected`
+    const {  _id,id,isSelected, ...cleanData } = editingRowData;
+
+    const response = await fetch(`${API}/products/${encodeURIComponent(selectedItem)}/${editingRowId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(cleanData),
+    });
+
+    if (response.ok) {
+      const updated = productData.map((product) =>
+        product._id === editingRowId ? { ...product, ...editingRowData, isSelected: true } : product
+      );
+      setProductData(updated);
+      setEditingRowId(null);
+      setEditingRowData({});
+      setSelected([editingRowId]);
+    } else {
+      console.error("Failed to update");
+    }
+  } catch (error) {
+    console.error("Error updating:", error);
+  }
+};
+
+
+const [editingRowId, setEditingRowId] = useState(null);
+const [editingRowData, setEditingRowData] = useState({});
 
   const handleSelectRow = (id) => {
     setSelected((prev) =>
@@ -188,15 +284,21 @@ const updatedProducts = productData.map((product) =>
     );
   };
 
-  const handleInputChange = (id, field, value) => {
-    setEditingData((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        [field]: value,
-      },
-    }));
-  };
+  // const handleInputChange = (id, field, value) => {
+  //   setEditingData((prev) => ({
+  //     ...prev,
+  //     [id]: {
+  //       ...prev[id],
+  //       [field]: value,
+  //     },
+  //   }));
+  // };
+const handleInputChange = (field, value) => {
+  setEditingRowData((prev) => ({
+    ...prev,
+    [field]: value,
+  }));
+};
 
   console.log(productData)
   console.log(rows)
@@ -338,19 +440,14 @@ const updatedProducts = productData.map((product) =>
                         {columns.map((column) => (
                           <TableCell key={column.id}>
                             {" "}
-                            {isItemSelected && editingData[row.id] ? (
-                              <input
-                                type="text"
-                                value={editingData[row.id][column.id] || ""}
-                                onChange={(e) =>
-                                  handleInputChange(
-                                    row.id,
-                                    column.id,
-                                    e.target.value
-                                  )
-                                }
-                                onClick={(e) => e.stopPropagation()}
-                              />
+                            {editingRowId === row.id ? (
+  <input
+    type="text"
+    value={editingRowData[column.id] || ""}
+    onChange={(e) => handleInputChange(column.id, e.target.value)}
+    onClick={(e) => e.stopPropagation()}
+/>
+
                             ) : column.id === "value" ? (
                               value.toLocaleString()
                             ) : (
@@ -377,9 +474,10 @@ const updatedProducts = productData.map((product) =>
 
         <div className="mt-7">
           {" "}
-          <Button variant="contained" onClick={""}>
-            SAVE CHANGES
-          </Button>
+          <Button variant="contained" onClick={handleSave} disabled={!editingRowId}>
+  SAVE CHANGES
+</Button>
+
         </div>
       </div>
     </div>

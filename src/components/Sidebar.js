@@ -67,13 +67,16 @@ const handleSignOut = () => {
    
     <nav className=" hidden relative lg:block  lg:flex-initial lg:w-80 bg-primary2 w-64 h-full p-3 flex flex-col  text-secondary2  z-20">
       <div className="flex">
-        <img
+        {/* <img
           className="h-auto w-30 bg-slate-400 -mt-8"
           src={PigeonLogo}
           alt="company logo"
-        />
+        /> */}
+        <div className="text-2xl xl:text-4xl mb-7 lg:text-4xl lg:mr-12 md:mr-10 italic text-white font-display font-extrabold mt-7">
+            Heavenly Hurdles
+          </div>
       </div>
-      <div className="flex flex-col ">
+      <div className="flex flex-col mt-7">
         {sidebartoplinks.map((item, index) => (
           <SidebarMenu key={index} item={item} />
         ))}

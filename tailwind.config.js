@@ -6,6 +6,7 @@ module.exports = {
     extend: {
       fontFamily: {
         display: ["Cinzel"],
+        script: ["'Dancing Script'", "cursive"], 
       },
       colors: {
         primary1: "#173F5F",

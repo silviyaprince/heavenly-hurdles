@@ -234,10 +234,11 @@ export const ProductProvider = ({ children }) => {
 
   const handleItemClick = (item) => {
     setSelectedCategoryItem(item);
+    console.log(item)
     // const categoryProducts = productData;
 
     // if (categoryProducts) {
-    setDisplayedProducts(productData);
+   
     // } else {
     //   setDisplayedProducts([]);
     // }
@@ -268,9 +269,10 @@ export const ProductProvider = ({ children }) => {
 
   const getProducts = async () => {
     if (selectedCategoryItem) {
+      console.log(selectedCategoryItem)
       try {
         const response = await fetch(
-          `${API}/products/${selectedCategoryItem}`
+          `${API}/products/${encodeURIComponent(selectedCategoryItem)}`
         );
         const data = await response.json();
         setProductData(data);
@@ -280,12 +282,32 @@ export const ProductProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    if (selectedCategoryItem) {
-      getProducts();
-    }
-  }, [selectedCategoryItem]);
+  // useEffect(() => {
+  //   if (selectedCategoryItem) {
+  //     getProducts();
+  //   }
+  // }, [selectedCategoryItem]);
 
+useEffect(() => {
+  if (selectedCategoryItem) {
+    const getProducts = async () => {
+      try {
+        const response = await fetch(
+          `${API}/products/${encodeURIComponent(selectedCategoryItem)}`
+        );
+        const data = await response.json();
+        setProductData(data);
+        setDisplayedProducts(data); // ✅ move this here
+      } catch (error) {
+        console.error("Error fetching products:", error);
+        setProductData([]);
+        setDisplayedProducts([]);
+      }
+    };
+
+    getProducts();
+  }
+}, [selectedCategoryItem]);
 
   //dropdown  for addstock menu
   const categories={
